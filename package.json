@@ -1,0 +1,19 @@
+{
+  "name": "planify",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ritesh0402/Planify.git"
+  },
+  "author": "Ritesh Mestry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ritesh0402/Planify/issues"
+  },
+  "homepage": "https://github.com/ritesh0402/Planify#readme",
+  "description": ""
+}
