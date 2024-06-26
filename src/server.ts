@@ -43,7 +43,10 @@ app.use(cors({ credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionConfig))
 
-app.use('/auth', authRouter)
+app.use('/auth', authRouter);
+// app.use('/user/board', boardRouter);
+// app.use('/user/board/list', listRouter);
+// app.use('/user/board/list/task', taskRouter);
 
 app.listen(process.env.PORT, () => {
    connectToMongo();
