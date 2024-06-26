@@ -8,6 +8,7 @@ import 'dotenv/config'
 
 import authRouter from './routers/authRouter'
 import boardRouter from './routers/boardRouter'
+import listRouter from './routers/listRouter'
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -46,7 +47,7 @@ app.use(session(sessionConfig))
 
 app.use('/auth', authRouter);
 app.use('/api', boardRouter);
-// app.use('/user/board/list', listRouter);
+app.use('/api/lists', listRouter);
 // app.use('/user/board/list/task', taskRouter);
 
 app.listen(process.env.PORT, () => {

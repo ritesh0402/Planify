@@ -1,7 +1,4 @@
-import mongoose from "mongoose";
 import BoardModel from "../models/Board";
-import { ObjectId } from 'mongodb'
-import { error } from "console";
 
 const boardGetAll = async (req: any, res: any) => {
    try {
@@ -62,11 +59,11 @@ const boardDelete = async (req: any, res: any) => {
 
       const deletedBoard = await BoardModel.findOneAndDelete({
          _id: boardId,
-         creatorId: req.user.id,
+         creatorId: req.session.userId,
       });
 
       if (!deletedBoard) {
-         return res.sendStatus(404);
+         return res.status(404).send("List not Found");
       }
    } catch (err) {
       res.status(500).send("Internal Server Error!");

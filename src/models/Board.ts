@@ -13,7 +13,7 @@ const boardSchema = new mongoose.Schema({
 
 boardSchema.post('findOneAndDelete', async function (board, next) {
    await mongoose.model('List').deleteMany({ boardId: board._id });
-   await mongoose.model('Card').deleteMany({ boardId: board._id });
+   await mongoose.model('Task').deleteMany({ boardId: board._id });
    await mongoose.model('Subtask').deleteMany({ boardId: board._id });
    next()
 })

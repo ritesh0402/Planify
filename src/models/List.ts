@@ -9,5 +9,9 @@ const listSchema = new mongoose.Schema({
    timestamps: true,
 });
 
+listSchema.post('findOneAndDelete', async function (list, next) {
+   await mongoose.model('Task').deleteMany({ listId: list._id });
+   next()
+})
 
 export default mongoose.model("List", listSchema);

@@ -1,6 +1,5 @@
 import { NextFunction } from "express";
 import mongoose from "mongoose";
-import Board from "../models/Board";
 const { body, validationResult } = require('express-validator');
 
 const getAllUserBoardsReqValidator = (req: any, res: any, next: NextFunction) => {
@@ -28,6 +27,9 @@ const getBoardReqValidator = (req: any, res: any, next: NextFunction) => {
 }
 
 const createBoardReqValidator = (req: any, res: any, next: NextFunction) => {
+   if (!req.body.boardTitle) {
+      return res.status(400).json({ error: 'Missing one or more felids!' });
+   }
    body('boardTitle', 'Title must not be empty.').isLength({ min: 1, max: 64 });
    const errors = validationResult(req);
    if (!errors.isEmpty()) {
@@ -37,8 +39,8 @@ const createBoardReqValidator = (req: any, res: any, next: NextFunction) => {
 }
 
 const updateBoardReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id) {
-      return res.status(400).json({ error: 'Invalid Request' });
+   if (!req.params.id || !req.body.boardTitle) {
+      return res.status(400).json({ error: 'Missing one or more felids!' });
    }
    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ error: 'Invalid BoardId' });
