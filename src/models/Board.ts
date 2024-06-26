@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const boardSchema = new mongoose.Schema({
-   createrId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+   creatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
    boardTitle: { type: String, required: true }
 }, {
    timestamps: true,
@@ -10,5 +10,12 @@ const boardSchema = new mongoose.Schema({
 // boardSchema.virtual('url').get(function () {
 //    return `/${this._id}`;
 // });
+
+boardSchema.post('findOneAndDelete', async function (board, next) {
+   await mongoose.model('List').deleteMany({ boardId: board._id });
+   await mongoose.model('Card').deleteMany({ boardId: board._id });
+   await mongoose.model('Subtask').deleteMany({ boardId: board._id });
+   next()
+})
 
 export default mongoose.model("Board", boardSchema);

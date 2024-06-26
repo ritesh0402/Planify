@@ -7,6 +7,7 @@ import connectToMongo from './utils/db'
 import 'dotenv/config'
 
 import authRouter from './routers/authRouter'
+import boardRouter from './routers/boardRouter'
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -44,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionConfig))
 
 app.use('/auth', authRouter);
-// app.use('/user/board', boardRouter);
+app.use('/api', boardRouter);
 // app.use('/user/board/list', listRouter);
 // app.use('/user/board/list/task', taskRouter);
 

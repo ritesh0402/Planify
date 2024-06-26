@@ -27,10 +27,10 @@ const userLogin = async (req: any, res: any) => {
    }
 }
 
-const userSignup = (req: any, res: any) => {
+const userSignup = async (req: any, res: any) => {
    const { username, email, phone, password } = req.body;
    const newUser = new UserModel({ username: username, password: password, email: email, phone: phone });
-   newUser.save();
+   await newUser.save();
    req.session.userId = newUser._id;
    res.status(200).send("User Successfully Registered!");
 }

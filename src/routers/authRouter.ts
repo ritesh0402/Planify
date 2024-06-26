@@ -1,7 +1,7 @@
 import express from 'express'
 import authController from '../controllers/authController'
-import checkAuth from '../middleware/auth'
-import reqValidator from '../middleware/reqValidator'
+import checkAuth from '../middleware/checkAuth'
+import reqValidator from '../middleware/authReqValidator'
 const router = express.Router()
 
 router.post('/login', checkAuth.isNotAuthenticated, reqValidator.loginReqValidator, authController.userLogin)
