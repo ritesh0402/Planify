@@ -1,59 +1,57 @@
 import { NextFunction } from "express";
 import mongoose from "mongoose";
-import ListModel from "../models/List";
-const { body, validationResult } = require('express-validator');
+const { param, body, validationResult } = require('express-validator');
 
-const getListReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id) {
-      return res.status(400).json({ error: 'Invalid Request' });
+const getListReqValidator = [
+   param('id', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+      next();
    }
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid listId' });
-   }
-   next();
-}
+]
 
-const createListReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.body.boardId || !req.body.listTitle || !req.body.position || !req.body._id) {
-      return res.status(400).json({ error: 'Missing one or more felids!' });
-   }
-   if (!mongoose.Types.ObjectId.isValid(req.body.boardId)) {
-      return res.status(400).json({ error: 'Invalid boardId' });
-   }
-   if (!mongoose.Types.ObjectId.isValid(req.body._id)) {
-      return res.status(400).json({ error: 'Invalid _id' });
-   }
-   body('listTitle', 'Title must not be empty.').isLength({ min: 1, max: 64 });
-   const errors = validationResult(req);
-   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-   }
-   next();
-}
+const createListReqValidator = [
+   body('boardId').exists().notEmpty().isMongoId().escape(),
+   body('listTitle', 'Invalid listTitle').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
+   body('position').exists().notEmpty().isNumeric().escape(),
+   body('_id').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
 
-const updateListReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id || !req.body.listTitle || !req.body.position || !req.body.coverColor) {
-      return res.status(400).json({ error: 'Missing one or more felids!' });
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+      next();
    }
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid listId' });
-   }
-   body('boardTitle', 'Title must not be empty.').isLength({ min: 1, max: 64 });
-   const errors = validationResult(req);
-   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-   }
-   next();
-}
+]
 
-const deleteListReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id) {
-      return res.status(400).json({ error: 'Invalid Request' });
+const updateListReqValidator = [
+   param('id', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   body('listTitle', 'Invalid listTitle').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
+   body('position').exists().notEmpty().isNumeric().escape(),
+   body('coverColor').exists().notEmpty().escape(),
+   (req: any, res: any, next: NextFunction) => {
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+      next();
    }
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid BoardId' });
+]
+
+const deleteListReqValidator = [
+   param('id', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+      next();
    }
-   next();
-}
+]
 
 export default { getListReqValidator, createListReqValidator, updateListReqValidator, deleteListReqValidator }

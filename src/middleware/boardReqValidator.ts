@@ -1,67 +1,69 @@
 import { NextFunction } from "express";
 import mongoose from "mongoose";
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 
-const getAllUserBoardsReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.userId) {
-      return res.status(400).json({ error: 'Invalid Request' });
-   }
-   if (req.params.userId !== req.session.userId) {
-      return res.status(401).json({ error: 'Access Denied' });
-   }
-   if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
-      return res.status(400).json({ error: 'Invalid UserId' });
-   }
-   next();
-}
+const getAllUserBoardsReqValidator = [
+   param('userId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
 
-const getBoardReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id) {
-      return res.status(400).json({ error: 'Invalid Request' });
+      if (req.params.userId !== req.session.userId) {
+         return res.status(401).json({ error: 'Access Denied' });
+      }
+      next();
    }
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid BoardId' });
-   }
-   next();
+]
 
-}
+const getBoardReqValidator = [
+   param('id', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+      next();
 
-const createBoardReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.body.boardTitle) {
-      return res.status(400).json({ error: 'Missing one or more felids!' });
    }
-   body('boardTitle', 'Title must not be empty.').isLength({ min: 1, max: 64 });
-   const errors = validationResult(req);
-   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-   }
-   next();
-}
+]
 
-const updateBoardReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id || !req.body.boardTitle) {
-      return res.status(400).json({ error: 'Missing one or more felids!' });
-   }
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid BoardId' });
-   }
-   body('boardTitle', 'Title must not be empty.').isLength({ min: 1, max: 64 });
-   const errors = validationResult(req);
-   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-   }
-   next();
-}
+const createBoardReqValidator = [
+   body('boardTitle', 'Invalid boardTitle.').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
+   (req: any, res: any, next: NextFunction) => {
 
-const deleteBoardReqValidator = (req: any, res: any, next: NextFunction) => {
-   if (!req.params.id) {
-      return res.status(400).json({ error: 'Invalid Request' });
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).json({ errors: errors.array()[0].msg })
+      }
+      next();
    }
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: 'Invalid BoardId' });
+]
+
+const updateBoardReqValidator = [
+   body('boardTitle', 'Invalid boardTitle.').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
+   param('id', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).json({ errors: errors.array() })
+      }
+      next();
    }
-   next();
-}
+]
+
+const deleteBoardReqValidator = [
+   param('id', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   (req: any, res: any, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+      next();
+   }
+]
 
 
 export default { getAllUserBoardsReqValidator, getBoardReqValidator, createBoardReqValidator, updateBoardReqValidator, deleteBoardReqValidator }
