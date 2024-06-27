@@ -1,8 +1,13 @@
 {
   "name": "planify",
   "version": "1.0.0",
+  "main": "server.js",
   "scripts": {
-     
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"  
   },
   "repository": {
     "type": "git",
