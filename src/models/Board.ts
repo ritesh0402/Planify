@@ -7,9 +7,9 @@ const boardSchema = new mongoose.Schema({
    timestamps: true,
 });
 
-// boardSchema.virtual('url').get(function () {
-//    return `/${this._id}`;
-// });
+boardSchema.virtual('url').get(function () {
+   return `/board/${this._id}`;
+});
 
 boardSchema.post('findOneAndDelete', async function (board, next) {
    await mongoose.model('List').deleteMany({ boardId: board._id });

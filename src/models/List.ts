@@ -11,6 +11,7 @@ const listSchema = new mongoose.Schema({
 
 listSchema.post('findOneAndDelete', async function (list, next) {
    await mongoose.model('Task').deleteMany({ listId: list._id });
+   await mongoose.model('SubTask').deleteMany({ listId: list._id });
    next()
 })
 

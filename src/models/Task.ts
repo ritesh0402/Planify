@@ -12,5 +12,13 @@ const TaskSchema = new mongoose.Schema({
    timestamps: true,
 });
 
+TaskSchema.post('findOneAndDelete', async function (task, next) {
+   await mongoose.model('SubTask').deleteMany({ taskId: task._id });
+   next()
+})
 
+TaskSchema.post('findOneAndUpdate', async function (task, next) {
+   await mongoose.model('SubTask').updateMany({ taskId: task._id }, { listId: task.listId });
+   next()
+})
 export default mongoose.model("Task", TaskSchema);

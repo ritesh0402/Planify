@@ -18,7 +18,6 @@ const createTaskReqValidator = [
    body('boardId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('taskTitle', 'Invalid taskTitle value.').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
    body('position', 'Invalid position value.').exists().notEmpty().isNumeric().escape(),
-   // body('coverColor').exists().notEmpty().escape(),
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -61,6 +60,7 @@ const deleteTaskReqValidator = [
 const createSubtaskReqValidator = [
    body('_id', 'SubtaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('taskId', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   body('listId', 'ListId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('boardId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('subTaskTitle', 'Invalid taskTitle value.').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
    body('position', 'Invalid position value.').exists().notEmpty().isNumeric().escape(),
@@ -76,6 +76,7 @@ const createSubtaskReqValidator = [
 
 const updateSubtaskReqValidator = [
    body('taskId', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   body('listId', 'ListId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('boardId', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('subTaskTitle', 'Invalid taskTitle').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
    body('position', 'Invalid position value.').exists().notEmpty().isNumeric().escape(),

@@ -43,8 +43,6 @@ const listUpdate = async (req: any, res: any) => {
       if (utilityFn.isTooClose(req.body.position)) {
          const boardId = req.body.boardId;
          await utilityFn.recalcItemsPos({ boardId: boardId }, ListModel);
-
-         // return;
       }
 
       res.status(200).send(updatedList);

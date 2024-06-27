@@ -5,6 +5,7 @@ const SubTaskSchema = new mongoose.Schema({
    isDone: { type: mongoose.Schema.Types.Boolean, default: false, required: true },
    position: { type: mongoose.Schema.Types.Number, required: true },
    taskId: { type: mongoose.Schema.Types.ObjectId, ref: 'Task', required: true },
+   listId: { type: mongoose.Schema.Types.ObjectId, ref: 'List', required: true },
    boardId: { type: mongoose.Schema.Types.ObjectId, ref: 'Board', required: true },
 }, {
    timestamps: true,

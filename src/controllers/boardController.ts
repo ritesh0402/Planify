@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import BoardModel from "../models/Board";
 
 const boardGetAll = async (req: any, res: any) => {
@@ -12,8 +13,45 @@ const boardGetAll = async (req: any, res: any) => {
 
 const boardGet = async (req: any, res: any) => {
    try {
-      const board = await BoardModel.findOne({ _id: req.params.id }); // todo: update find board query
-      if (!board) {
+      const creatorId = new Types.ObjectId(req.session.userId)
+      const _id = new Types.ObjectId(req.params.id)
+      const board = await BoardModel.aggregate([
+         {
+            $match: { _id: _id, creatorId: creatorId },
+         },
+         {
+            $lookup: {
+               from: 'lists',
+               localField: '_id',
+               foreignField: 'boardId',
+               as: 'lists',
+            },
+         },
+         {
+            $lookup: {
+               from: 'tasks',
+               let: { boardId: '$_id' },
+               pipeline: [
+                  { $match: { $expr: { $eq: ['$boardId', '$$boardId'] } } },
+                  {
+                     $lookup: {
+                        from: 'subtasks',
+                        let: { taskId: '$_id' },
+                        pipeline: [
+                           {
+                              $match: { $expr: { $eq: ['$taskId', '$$taskId'] } },
+                           },
+                        ],
+                        as: 'subtasks',
+                     },
+                  },
+               ],
+               as: 'tasks',
+            },
+         },
+      ]);
+
+      if (!board || !board.length) {
          return res.status(404).send({ error: "Board not found" })
       }
       return res.status(200).send(board);

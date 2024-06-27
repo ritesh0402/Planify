@@ -37,7 +37,7 @@ const taskCreate = async (req: any, res: any) => {
 
 const taskUpdate = async (req: any, res: any) => {
    try {
-      const updatedTask = await TaskModel.findByIdAndUpdate(req.params.id,
+      const updatedTask = await TaskModel.findOneAndUpdate({ _id: req.params.id },
          {
             taskTitle: req.body.taskTitle,
             description: req.body.description,
@@ -87,6 +87,7 @@ const subtaskCreate = async (req: any, res: any) => {
       const newSubTask = await new SubTaskModel({
          _id: req.body._id,
          taskId: req.body.taskId,
+         listId: req.body.listId,
          boardId: req.body.boardId,
          subTaskTitle: req.body.subTaskTitle,
          position: req.body.position,
@@ -103,7 +104,6 @@ const subtaskCreate = async (req: any, res: any) => {
 }
 
 const subtaskUpdate = async (req: any, res: any) => {
-   // const { taskId, position, boardId, isDone, subTaskTitle } = req.body;
    try {
       const updatedSubTask = await SubTaskModel.findByIdAndUpdate(req.params.id,
          {
@@ -111,6 +111,7 @@ const subtaskUpdate = async (req: any, res: any) => {
             position: req.body.position,
             isDone: req.body.isDone,
             taskId: req.body.taskId,
+            listId: req.body.listId,
             boardId: req.body.boardId,
          },
          {
