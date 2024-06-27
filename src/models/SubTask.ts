@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 
 const SubTaskSchema = new mongoose.Schema({
-   createrId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-   boardTitle: { type: String, required: true }
+   subTaskTitle: { type: mongoose.Schema.Types.String, require: true },
+   isDone: { type: mongoose.Schema.Types.Boolean, default: false, required: true },
+   position: { type: mongoose.Schema.Types.Number, required: true },
+   taskId: { type: mongoose.Schema.Types.ObjectId, ref: 'Task', required: true },
+   boardId: { type: mongoose.Schema.Types.ObjectId, ref: 'Board', required: true },
 }, {
    timestamps: true,
 });

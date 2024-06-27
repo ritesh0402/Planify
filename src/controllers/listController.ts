@@ -62,6 +62,7 @@ const listDelete = async (req: any, res: any) => {
       if (!deletedList) {
          return res.status(404).send("List not Found");
       }
+      res.status(200).send(deletedList)
    } catch (err) {
       res.status(500).send("Internal Server Error!");
    }

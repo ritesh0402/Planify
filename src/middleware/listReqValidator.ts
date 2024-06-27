@@ -1,5 +1,4 @@
 import { NextFunction } from "express";
-import mongoose from "mongoose";
 const { param, body, validationResult } = require('express-validator');
 
 const getListReqValidator = [
