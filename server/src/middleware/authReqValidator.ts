@@ -1,6 +1,6 @@
 import { NextFunction } from "express";
 import User from "../models/User";
-const { body, validationResult } = require('express-validator');
+const { param, body, validationResult } = require('express-validator');
 
 const signupReqValidator = [
    body('username', 'Username must not be empty. ').exists().notEmpty().isLength({ min: 6, max: 64 }).escape(),
@@ -40,4 +40,17 @@ const loginReqValidator = [
       next();
    }]
 
-export default { signupReqValidator, loginReqValidator }
+
+const userEmailVerifyReqValidator = [
+   param('token', 'Invalid verification link.').exists().notEmpty(),
+   (req: any, res: any, next: NextFunction) => {
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+         return res.status(400).send({ error: errors.array()[0].msg })
+      }
+
+      next();
+   }]
+
+export default { signupReqValidator, loginReqValidator, userEmailVerifyReqValidator }

@@ -1,4 +1,35 @@
-import mongoose from "mongoose";
+import nodemailer from 'nodemailer'
+import jwt from 'jsonwebtoken'
+import 'dotenv/config'
+
+const sendMail = async (userEmail: string) => {
+   const transporter = nodemailer.createTransport({
+      service: process.env.EMAIL_SERVICE,
+      auth: {
+         user: process.env.EMAIL_ID,
+         pass: process.env.EMAIL_PASS,
+      },
+   });
+   const verificationToken = jwt.sign({ email: userEmail }, process.env.SESSION_SECRET!, {
+      expiresIn: '12h',
+   });
+
+   const verificationLink = `${process.env.DEPLOYMENT_LINK}/auth/verify/${verificationToken}`;
+
+   const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: userEmail,
+      subject: 'Email Verification for Planify',
+      html: `<p>Please verify your email by clicking the link below:</p><p><a href="${verificationLink}">Verify Email</a></p>`,
+   };
+
+   try {
+      await transporter.sendMail(mailOptions);
+      return true;
+   } catch (error) {
+      return false;
+   }
+}
 
 // Checks if item position is too close to its neighbouring items
 const isTooClose = (position: number): boolean => {
@@ -29,4 +60,4 @@ const recalcItemsPos = async (parentId: any, Model: any) => {
    }
 };
 
-export default { recalcItemsPos, isTooClose };
+export default { recalcItemsPos, isTooClose, sendMail };

@@ -8,6 +8,7 @@ router.post('/login', checkAuth.isNotAuthenticated, reqValidator.loginReqValidat
 router.post('/signup', reqValidator.signupReqValidator, authController.userSignup)
 router.post('/logout', checkAuth.isAuthenticated, authController.userLogout)
 router.post('/user', authController.userCheckAuth)
+router.get('/verify/:token', reqValidator.userEmailVerifyReqValidator, authController.userEmailVerify)
 
 // add guest login
 
