@@ -5,11 +5,11 @@ const listGet = async (req: any, res: any) => {
    try {
       const list = await ListModel.findById(req.params.id);
       if (!list) {
-         return res.status(404).send({ error: "List not found" })
+         return res.status(404).send({ status: "Failure", data: {}, error: "List not found!", msg: "Something went wrong." })
       }
-      return res.status(200).send(list);
+      return res.status(200).send({ status: "Success", data: { list }, error: "", msg: "List retrieved." });
    } catch (err) {
-      res.status(500).send("Internal Server Error!");
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -22,10 +22,13 @@ const listCreate = async (req: any, res: any) => {
          position: req.body.position,
       });
       await list.save();
+      if (!list) {
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "List not created!" });
+      }
 
-      res.status(200).send(list);
+      res.status(200).send({ status: "Success", data: { list }, error: "", msg: "Task Successfully Created" });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -39,15 +42,17 @@ const listUpdate = async (req: any, res: any) => {
          { new: true }
       );
 
-      // Sets new positions if the new pos of the list is too close to neighbouring lists
+      if (!updatedList) {
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "List not updated!" });
+      }
       if (utilityFn.isTooClose(req.body.position)) {
          const boardId = req.body.boardId;
          await utilityFn.recalcItemsPos({ boardId: boardId }, ListModel);
       }
 
-      res.status(200).send(updatedList);
+      res.status(200).send({ status: "Success", data: { updatedList }, error: "", msg: "List successfully updated." });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -58,11 +63,11 @@ const listDelete = async (req: any, res: any) => {
       const deletedList = await ListModel.findOneAndDelete({ _id: listId });
 
       if (!deletedList) {
-         return res.status(404).send("List not Found");
+         return res.status(404).send({ status: "Failure", data: {}, error: "List not found!", msg: "Something went wrong." });
       }
-      res.status(200).send(deletedList)
+      res.status(200).send({ status: "Success", data: { deletedList }, error: "", msg: "Task successfully deleted." })
    } catch (err) {
-      res.status(500).send("Internal Server Error!");
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 

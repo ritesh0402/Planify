@@ -6,7 +6,7 @@ const getListReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }
@@ -21,7 +21,7 @@ const createListReqValidator = [
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }
@@ -36,7 +36,7 @@ const updateListReqValidator = [
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }
@@ -47,7 +47,7 @@ const deleteListReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }

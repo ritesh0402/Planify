@@ -8,11 +8,11 @@ const taskGet = async (req: any, res: any) => {
    try {
       const task = await TaskModel.findById(taskId);
       if (!task) {
-         return res.status(404).send({ error: "Task not found!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Task not found!", msg: "Something went wrong." });
       }
-      res.status(200).send(task);
+      res.status(200).send({ status: "Success", data: { task }, error: "", msg: "Task retrieved." });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -27,11 +27,11 @@ const taskCreate = async (req: any, res: any) => {
       }).save();
 
       if (!newTask) {
-         return res.status(404).send({ error: "Task not created!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Task not created!" });
       }
-      res.status(200).send(newTask);
+      res.status(200).send({ status: "Success", data: { newTask }, error: "", msg: "Task Successfully Created" });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -52,17 +52,16 @@ const taskUpdate = async (req: any, res: any) => {
       );
 
       if (!updatedTask) {
-         return res.status(404).send({ error: "Task not updated!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Task not updated!" });
       }
       if (utilityFn.isTooClose(req.body.position)) {
          const listId = req.body.listId;
          const tasks = await utilityFn.recalcItemsPos({ listId }, TaskModel);
 
-         return res.send(tasks);
       }
-      res.status(200).send(updatedTask);
+      res.status(200).send({ status: "Success", data: { updatedTask }, error: "", msg: "Task successfully updated." });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -71,11 +70,11 @@ const taskDelete = async (req: any, res: any) => {
    try {
       const deletedTask = await TaskModel.findByIdAndDelete(taskId);
       if (!deletedTask) {
-         return res.status(404).send({ error: "Task not found!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Task not found!", msg: "Something went wrong." });
       }
-      res.status(200).send(deletedTask);
+      res.status(200).send({ status: "Success", data: { deletedTask }, error: "", msg: "Task successfully deleted." });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -95,11 +94,11 @@ const subtaskCreate = async (req: any, res: any) => {
       }).save();
 
       if (!newSubTask) {
-         return res.status(404).send({ error: "Task not created!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Subtask not created!" });
       }
-      res.status(200).send(newSubTask);
+      res.status(200).send({ status: "Success", data: { newSubTask }, error: "", msg: "Subtask Successfully Created" });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -120,17 +119,17 @@ const subtaskUpdate = async (req: any, res: any) => {
       );
 
       if (!updatedSubTask) {
-         return res.status(404).send({ error: "Task not updated!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Subtask not updated!" });
       }
       if (utilityFn.isTooClose(req.body.position)) {
          const taskId = req.body.taskId;
          await utilityFn.recalcItemsPos({ taskId }, SubTaskModel);
 
-         return;
+         // return;
       }
-      res.status(200).send(updatedSubTask);
+      res.status(200).send({ status: "Success", data: { updatedSubTask }, error: "", msg: "Subtask successfully updated." });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -139,11 +138,11 @@ const subtaskDelete = async (req: any, res: any) => {
    try {
       const deletedSubTask = await SubTaskModel.findByIdAndDelete(subtaskId);
       if (!deletedSubTask) {
-         return res.status(404).send({ error: "Subtask not deleted!" });
+         return res.status(404).send({ status: "Failure", data: {}, error: "Subtask not found!", msg: "Something went wrong." });
       }
-      res.status(200).send(deletedSubTask);
+      res.status(200).send({ status: "Success", data: { deletedSubTask }, error: "", msg: "Subtask successfully updated." });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 

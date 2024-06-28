@@ -6,11 +6,11 @@ const getAllUserBoardsReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
 
       if (req.params.userId !== req.session.userId) {
-         return res.status(401).json({ error: 'Access Denied' });
+         return res.status(401).send({ status: "Failure", data: {}, error: "", msg: "Access Denied!" });
       }
       next();
    }
@@ -21,7 +21,7 @@ const getBoardReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
 
@@ -34,7 +34,7 @@ const createBoardReqValidator = [
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).json({ errors: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }
@@ -47,7 +47,7 @@ const updateBoardReqValidator = [
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).json({ errors: errors.array() })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }
@@ -58,7 +58,7 @@ const deleteBoardReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next();
    }

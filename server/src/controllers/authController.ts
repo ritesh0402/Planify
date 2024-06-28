@@ -17,18 +17,17 @@ const userLogin = async (req: any, res: any) => {
 
       if (user) {
          if (!user.isVerified) {
-            return res.status(401).send("Please check the verification email sent to you before trying to login.");
+            return res.status(401).send({ status: "Failure", data: {}, error: "User is not verified.", msg: "Please check the verification email sent to you before trying to login." });
          }
          const isValid = await bcrypt.compare(password, user.password);
          if (isValid) {
             req.session.userId = user._id;
-            return res.status(200).send("Login Successful!");
+            return res.status(200).send({ status: "Success", data: { user: user.username }, error: "", msg: "Login Successful!" });
          }
       }
-      return res.status(401).send("Invalid Username/Email or Password!")
+      return res.status(401).send({ status: "Failure", data: {}, error: "Invalid Username/Email or Password!", msg: "Please enter valid Username/Password!" })
    } catch (err) {
-      // console.error('Error checking existing user:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -39,15 +38,14 @@ const userSignup = async (req: any, res: any) => {
       const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, isVerified: false });
       const emailStatus = await utilityFn.sendMail(email);
       if (!emailStatus) {
-         return res.status(500).send("Try signing up again.")
+         return res.status(500).send({ status: "Failure", data: {}, error: "Try signing up again.", msg: "Internal Server Error!" })
       }
       await newUser.save();
       req.session.userId = newUser._id;
-      res.status(200).send("Verify email to complete registration.");
+      res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "Verify email to complete registration." });
 
    } catch (err) {
-      console.error('Error verifying user email: ', err);
-      res.status(500).json({ error: err });
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 
 }
@@ -55,7 +53,7 @@ const userSignup = async (req: any, res: any) => {
 const userLogout = (req: any, res: any) => {
    req.session.destroy((err: any) => {
       if (err) return res.status(403).send(err);
-      return res.status(200).send("Successfully Logged out!");
+      return res.status(200).send({ status: "Success", data: {}, error: "", msg: "Successfully Logged out!" });
    });
 
 }
@@ -75,19 +73,19 @@ const userEmailVerify = async (req: any, res: any) => {
       const user = await UserModel.findOne({ email: email });
 
       if (!user) {
-         return res.status(404).send(`User ${email} not found`);
+         return res.status(404).send({ status: "Failure", data: {}, error: `User ${email} not found`, msg: "Try signing up with another email." });
       }
 
       if (user.isVerified) {
-         return res.status(400).send("Email is already verified.");
+         return res.status(200).send({ status: "Success", data: {}, error: "", msg: "Email is already verified." });
       }
 
       user.isVerified = true;
       await user.save();
-      return res.status(200).send('Email Successfully Verified!') // redirect to login page
+      return res.status(200).send({ status: "Success", data: {}, error: "", msg: 'Email Successfully Verified!' }) // redirect to login page
    } catch (err) {
       console.error('Error verifying user email:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 

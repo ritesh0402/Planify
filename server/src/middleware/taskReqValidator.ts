@@ -6,7 +6,7 @@ const getTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -21,7 +21,7 @@ const createTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -38,7 +38,7 @@ const updateTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -49,7 +49,7 @@ const deleteTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -68,7 +68,7 @@ const createSubtaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -84,7 +84,7 @@ const updateSubtaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -96,7 +96,7 @@ const deleteSubtaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }

@@ -4,10 +4,12 @@ import BoardModel from "../models/Board";
 const boardGetAll = async (req: any, res: any) => {
    try {
       const boards = await BoardModel.find({ creatorId: req.params.userId });
-
-      res.status(200).send(boards);
+      if (!boards) {
+         return res.status(404).send({ status: "Failure", data: {}, error: "Boards were not found!", msg: "Something went wrong." });
+      }
+      res.status(200).send({ status: "Success", data: { boards }, error: "", msg: "Boards retrieved." });
    } catch (err) {
-      res.status(500).send("Internal Server Error!");
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -52,11 +54,11 @@ const boardGet = async (req: any, res: any) => {
       ]);
 
       if (!board || !board.length) {
-         return res.status(404).send({ error: "Board not found" })
+         return res.status(404).send({ status: "Failure", data: {}, error: "Board were not found!", msg: "Something went wrong." })
       }
-      return res.status(200).send(board);
+      return res.status(200).send({ status: "Success", data: { board }, error: "", msg: "Board retrieved." });
    } catch (err) {
-      res.status(500).send("Internal Server Error!");
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -64,10 +66,12 @@ const boardCreate = async (req: any, res: any) => {
    try {
       const board = new BoardModel({ creatorId: req.session.userId, boardTitle: req.body.boardTitle });
       await board.save();
-
-      res.status(200).send(board);
+      if (!board) {
+         return res.status(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Board not created!" });
+      }
+      res.status(200).send({ status: "Success", data: { board }, error: "", msg: "Board Successfully Created" });
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -81,13 +85,13 @@ const boardUpdate = async (req: any, res: any) => {
       );
 
       if (!updatedBoard) {
-         return res.sendStatus(404);
+         return res.sendStatus(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Board not updated!" });
       }
 
-      res.status(200).send(updatedBoard);
+      res.status(200).send({ status: "Success", data: { updatedBoard }, error: "", msg: "Board successfully updated." });
 
    } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
@@ -101,10 +105,11 @@ const boardDelete = async (req: any, res: any) => {
       });
 
       if (!deletedBoard) {
-         return res.status(404).send("List not Found");
+         return res.status(404).send({ status: "Failure", data: {}, error: "Board not found!", msg: "Something went wrong." });
       }
+      res.status(200).send({ status: "Success", data: { deletedBoard }, error: "", msg: "Board successfully deleted." });
    } catch (err) {
-      res.status(500).send("Internal Server Error!");
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
