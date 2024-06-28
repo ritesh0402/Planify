@@ -19,7 +19,7 @@ const taskGet = async (req: any, res: any) => {
 const taskCreate = async (req: any, res: any) => {
    try {
       const newTask = await new TaskModel({
-         _id: req.body._id,
+         // _id: req.body._id,
          taskTitle: req.body.taskTitle,
          position: req.body.position,
          listId: req.body.listId,
@@ -85,13 +85,13 @@ const taskDelete = async (req: any, res: any) => {
 const subtaskCreate = async (req: any, res: any) => {
    try {
       const newSubTask = await new SubTaskModel({
-         _id: req.body._id,
-         taskId: req.body.taskId,
-         listId: req.body.listId,
-         boardId: req.body.boardId,
+         // _id: req.body._id,
          subTaskTitle: req.body.subTaskTitle,
          position: req.body.position,
          isDone: req.body.isDone,
+         taskId: req.body.taskId,
+         listId: req.body.listId,
+         boardId: req.body.boardId,
       }).save();
 
       if (!newSubTask) {

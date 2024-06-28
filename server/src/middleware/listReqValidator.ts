@@ -16,7 +16,7 @@ const createListReqValidator = [
    body('boardId').exists().notEmpty().isMongoId().escape(),
    body('listTitle', 'Invalid listTitle').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
    body('position').exists().notEmpty().isNumeric().escape(),
-   body('_id').exists().notEmpty().isMongoId().escape(),
+   // body('_id').exists().notEmpty().isMongoId().escape(),
    (req: any, res: any, next: NextFunction) => {
 
       const errors = validationResult(req);

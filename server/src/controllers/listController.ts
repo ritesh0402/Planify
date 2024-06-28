@@ -16,7 +16,7 @@ const listGet = async (req: any, res: any) => {
 const listCreate = async (req: any, res: any) => {
    try {
       const list = new ListModel({
-         _id: req.body._id,
+         // _id: req.body._id,
          listTitle: req.body.listTitle,
          boardId: req.body.boardId,
          position: req.body.position,

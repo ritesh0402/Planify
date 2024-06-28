@@ -13,7 +13,7 @@ const getTaskReqValidator = [
 ]
 
 const createTaskReqValidator = [
-   body('_id', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   // body('_id', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('listId', 'ListId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('boardId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('taskTitle', 'Invalid taskTitle value.').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
@@ -58,7 +58,7 @@ const deleteTaskReqValidator = [
 // Subtask
 
 const createSubtaskReqValidator = [
-   body('_id', 'SubtaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   // body('_id', 'SubtaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('taskId', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('listId', 'ListId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('boardId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
