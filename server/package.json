@@ -1,8 +1,7 @@
 {
   "name": "planify",
   "version": "1.0.0",
-  "main": "server.js",
-  "private": true,
+  "main": "dist/server.js",
   "homepage": "https://github.com/ritesh0402/Planify#readme",
   "description": "",
   "scripts": {
