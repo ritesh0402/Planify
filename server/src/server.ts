@@ -51,7 +51,8 @@ app.use('/api', boardRouter);
 app.use('/api/lists', listRouter);
 app.use('/api/tasks', taskRouter);
 
+connectToMongo();
+
 app.listen(process.env.PORT, () => {
-   connectToMongo();
    console.log(`Server listening on http://localhost:${PORT}`);
 })
