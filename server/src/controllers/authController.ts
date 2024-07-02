@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import UserModel from '../models/User'
 import jwt from 'jsonwebtoken';
 import utilityFn from '../utils/utilityFn';
+import { google } from 'googleapis'
 
 const userLogin = async (req: any, res: any) => {
    const { username, password } = req.body;
@@ -47,6 +48,46 @@ const userSignup = async (req: any, res: any) => {
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
+}
+
+const userGoogleSignupLogin = async (req: any, res: any) => {
+
+   try {
+      const oauth2Client = new google.auth.OAuth2(
+         process.env.GOOGLE_CLIENT_ID,
+         process.env.GOOGLE_CLIENT_SECRET,
+         process.env.GOOGLE_REDIRECT_URL
+      );
+      const code = req.query.code
+      const { tokens } = await oauth2Client.getToken(code)
+
+      const data = jwt.decode(tokens.id_token as string)
+      const { email } = data as { email: string }
+      const parts = email.split('@');
+      const username = parts[0]
+      const phone = 0
+      const password = parts[0] + '@password'
+
+      const existingUser = await UserModel.findOne({ email: email })
+      if (existingUser) {
+         req.session.userId = existingUser._id;
+         existingUser.isVerified = true;
+         await existingUser.save()
+         return res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "Login Successful." });
+      }
+
+      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, isVerified: true });
+      const emailStatus = await utilityFn.sendMail(email);
+      if (!emailStatus) {
+         return res.status(500).send({ status: "Failure", data: {}, error: "Try signing up again.", msg: "Internal Server Error!" })
+      }
+      await newUser.save();
+      req.session.userId = newUser._id;
+      res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "User successfully registered." });
+
+   } catch (err) {
+      res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
+   }
 
 }
 
@@ -67,9 +108,10 @@ const userCheckAuth = (req: any, res: any) => {
 
 const userEmailVerify = async (req: any, res: any) => {
    const token = req.params.token;
+   let { email } = req.query;
    try {
       const decoded = jwt.verify(token as string, process.env.SESSION_SECRET as string) as { email: string };
-      const email: string = decoded.email
+      email = decoded.email
       const user = await UserModel.findOne({ email: email });
 
       if (!user) {
@@ -83,10 +125,14 @@ const userEmailVerify = async (req: any, res: any) => {
       user.isVerified = true;
       await user.save();
       return res.status(200).send({ status: "Success", data: {}, error: "", msg: 'Email Successfully Verified!' }) // redirect to login page
-   } catch (err) {
-      console.error('Error verifying user email:', err);
+   } catch (err: any) {
+      if (err.name === 'TokenExpiredError') {
+         utilityFn.sendMail(email)
+         console.log(email)
+         return res.status(500).send({ status: "Failure", data: {}, error: err, msg: "New verification link has been sent to your email." });
+      }
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }
 
-export default { userLogin, userLogout, userSignup, userCheckAuth, userEmailVerify }
+export default { userLogin, userLogout, userSignup, userCheckAuth, userEmailVerify, userGoogleSignupLogin }
