@@ -11,6 +11,7 @@ import authRouter from './routers/authRouter'
 import boardRouter from './routers/boardRouter'
 import listRouter from './routers/listRouter'
 import taskRouter from './routers/taskRouter'
+import userRouter from './routers/userRouter'
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -41,6 +42,7 @@ app.use(session(sessionConfig))
 
 app.use('/auth', authRouter);
 app.use('/api', boardRouter);
+app.use('/api/user', userRouter);
 app.use('/api/lists', listRouter);
 app.use('/api/tasks', taskRouter);
 

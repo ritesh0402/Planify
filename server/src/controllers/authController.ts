@@ -35,8 +35,8 @@ const userLogin = async (req: any, res: any) => {
 const userSignup = async (req: any, res: any) => {
 
    try {
-      const { username, email, phone, password } = req.body;
-      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, isVerified: false });
+      const { username, email, phone, password, profile } = req.body;
+      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, profile: profile, isVerified: false });
       const emailStatus = await utilityFn.sendMail(email);
       if (!emailStatus) {
          return res.status(500).send({ status: "Failure", data: {}, error: "Try signing up again.", msg: "Internal Server Error!" })
@@ -62,7 +62,7 @@ const userGoogleSignupLogin = async (req: any, res: any) => {
       const { tokens } = await oauth2Client.getToken(code)
 
       const data = jwt.decode(tokens.id_token as string)
-      const { email } = data as { email: string }
+      const { email, profile = "" } = data as { email: string, profile: string }
       const parts = email.split('@');
       const username = parts[0]
       const phone = 0
@@ -76,7 +76,7 @@ const userGoogleSignupLogin = async (req: any, res: any) => {
          return res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "Login Successful." });
       }
 
-      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, isVerified: true });
+      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, profile: profile, isVerified: true });
       const emailStatus = await utilityFn.sendMail(email);
       if (!emailStatus) {
          return res.status(500).send({ status: "Failure", data: {}, error: "Try signing up again.", msg: "Internal Server Error!" })
