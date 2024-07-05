@@ -6,14 +6,14 @@ const getTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
 ]
 
 const createTaskReqValidator = [
-   body('_id', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   // body('_id', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('listId', 'ListId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('boardId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('taskTitle', 'Invalid taskTitle value.').exists().notEmpty().isLength({ min: 1, max: 64 }).escape(),
@@ -21,7 +21,7 @@ const createTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -38,7 +38,7 @@ const updateTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -49,7 +49,7 @@ const deleteTaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -58,7 +58,7 @@ const deleteTaskReqValidator = [
 // Subtask
 
 const createSubtaskReqValidator = [
-   body('_id', 'SubtaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
+   // body('_id', 'SubtaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('taskId', 'TaskId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('listId', 'ListId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
    body('boardId', 'BoardId is not a valid ObjectId.').exists().notEmpty().isMongoId().escape(),
@@ -68,7 +68,7 @@ const createSubtaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -84,7 +84,7 @@ const updateSubtaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }
@@ -96,7 +96,7 @@ const deleteSubtaskReqValidator = [
    (req: any, res: any, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-         return res.status(400).send({ error: errors.array()[0].msg })
+         return res.status(400).send({ status: "Failure", data: {}, error: errors.array()[0].msg, msg: "Request validation failed!" })
       }
       next()
    }

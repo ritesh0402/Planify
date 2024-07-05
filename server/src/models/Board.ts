@@ -18,4 +18,14 @@ boardSchema.post('findOneAndDelete', async function (board, next) {
    next()
 })
 
+boardSchema.post('deleteMany', async function (next) {
+   const deletedBoards = await this.model.find(this.getFilter());
+   for (const board of deletedBoards) {
+      await mongoose.model('List').deleteMany({ boardId: board._id });
+      await mongoose.model('Task').deleteMany({ boardId: board._id });
+      await mongoose.model('Subtask').deleteMany({ boardId: board._id });
+   }
+   next();
+})
+
 export default mongoose.model("Board", boardSchema);

@@ -1,30 +1,23 @@
 import express from 'express'
 import session from 'express-session'
 import cors from 'cors'
-import MongoStore from 'connect-mongo'
 import helmet from 'helmet'
 import connectToMongo from './utils/db'
+// import getRedisStore from './utils/getRedisStore'
+import getMongoStore from './utils/getMongoStore'
 import 'dotenv/config'
 
 import authRouter from './routers/authRouter'
 import boardRouter from './routers/boardRouter'
 import listRouter from './routers/listRouter'
 import taskRouter from './routers/taskRouter'
+import userRouter from './routers/userRouter'
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const store = MongoStore.create({
-   mongoUrl: process.env.MONGO_URI,
-   touchAfter: 24 * 60 * 60,
-   crypto: { secret: 'codeword' }
-})
-
-store.on("error", function (err) {
-   console.log('store error')
-   console.log(err)
-})
-
+const mongoStore = getMongoStore();
+// const redisStore = getRedisStore();
 
 const sessionConfig = {
    resave: false,
@@ -37,7 +30,8 @@ const sessionConfig = {
       maxAge: (100 * 60 * 60 * 24 * 7),
       httpOnly: true,
    },
-   store
+   // store: redisStore
+   store: mongoStore
 };
 
 app.use(helmet());
@@ -48,10 +42,13 @@ app.use(session(sessionConfig))
 
 app.use('/auth', authRouter);
 app.use('/api', boardRouter);
+app.use('/api/user', userRouter);
 app.use('/api/lists', listRouter);
 app.use('/api/tasks', taskRouter);
 
+connectToMongo();
+
 app.listen(process.env.PORT, () => {
-   connectToMongo();
    console.log(`Server listening on http://localhost:${PORT}`);
 })
+
