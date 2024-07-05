@@ -9,7 +9,7 @@ import AppRoutes from './components/AppRoutes';
 function App() {
   return (
     <div style={{ backgroundImage: `url(${bgImage})`, height: "100vh" }}>
-      {/* <Header /> */}
+      <Header />
       <AppRoutes />
       {/* <Landing /> */}
     </div>
