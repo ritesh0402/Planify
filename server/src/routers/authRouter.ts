@@ -12,7 +12,7 @@ router.post('/signup', reqValidator.signupReqValidator, authController.userSignu
 
 router.post('/logout', checkAuth.isAuthenticated, authController.userLogout)
 
-router.post('/user', authController.userCheckAuth)
+router.get('/user', authController.userCheckAuth)
 router.get('/verify/:token', reqValidator.userEmailVerifyReqValidator, authController.userEmailVerify)
 
 // add guest login
