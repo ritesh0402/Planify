@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/ritesh0402/Planify/static/css/main.e6c13ad2.css",
+    "main.js": "/ritesh0402/Planify/static/js/main.c029e0e2.js",
+    "static/js/453.258b012d.chunk.js": "/ritesh0402/Planify/static/js/453.258b012d.chunk.js",
+    "static/media/landingImage.png": "/ritesh0402/Planify/static/media/landingImage.fcd9d0a561e5eb10921a.png",
+    "static/media/backgroundImage.jpg": "/ritesh0402/Planify/static/media/backgroundImage.bf612a88b6d9e9499870.jpg",
+    "index.html": "/ritesh0402/Planify/index.html",
+    "main.e6c13ad2.css.map": "/ritesh0402/Planify/static/css/main.e6c13ad2.css.map",
+    "main.c029e0e2.js.map": "/ritesh0402/Planify/static/js/main.c029e0e2.js.map",
+    "453.258b012d.chunk.js.map": "/ritesh0402/Planify/static/js/453.258b012d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.c029e0e2.js"
+  ]
+}
