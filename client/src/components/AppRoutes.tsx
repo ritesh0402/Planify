@@ -11,15 +11,15 @@ import MainLayout from './layout/MainLayout';
 
 const AppRoutes = () => {
    return (
-      <Router>
+      <Router basename='/app'>
          <Routes>
-            <Route path="/ḍashboard" element={<Dashboard />} />
             <Route path="/" element={<Landing />} />
+            <Route path="/ḍashboard" element={<Dashboard />} />
             {/* <Route path="/auth" element={<Auth />} /> */}
             {/* <Route element={<MainLayout />}> */}
-               {/* <Route path="/user/profile" element={<Profile />} /> */}
-               {/* <Route path="/user/profile/update" element={<Update />} /> */}
-               {/* <Route path="/user/board" element={<KanbanBoard />} /> */}
+            {/* <Route path="/user/profile" element={<Profile />} /> */}
+            {/* <Route path="/user/profile/update" element={<Update />} /> */}
+            {/* <Route path="/user/board" element={<KanbanBoard />} /> */}
             {/* </Route> */}
          </Routes>
       </Router>
