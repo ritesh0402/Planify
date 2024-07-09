@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { TextField, FormControlLabel, Checkbox, Typography, Box, styled, Button } from '@mui/material'
+import { TextField, Box, Typography, styled, Button } from '@mui/material'
 
 const Container = styled(Box)({
     display : "flex",
@@ -11,7 +11,21 @@ const Container = styled(Box)({
     marginRight : 50
 })
 
-function SignUp() {
+const SignInText = styled(Typography)(({ theme }) => ({
+  fontSize: 14,
+  " > span": {
+    cursor: "pointer",
+  },
+  " > span:hover": {
+    textDecorationLine: "underline",
+  },
+}));
+
+interface MySignUpProps {
+  toggleLogin : ()=> void;
+}
+
+const SignUp : React.FC<MySignUpProps> = ({ toggleLogin }) => {
 
 
   return (
@@ -21,6 +35,9 @@ function SignUp() {
         <TextField label="Phone" variant="outlined" />
         <TextField label="Password" type="password" />
         <Button variant='contained'>Sign up</Button>
+        <SignInText>
+          Already have an account? <span onClick={toggleLogin}>Sign In</span>
+        </SignInText>
     </Container>
   )
 }

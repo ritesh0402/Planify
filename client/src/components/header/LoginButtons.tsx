@@ -8,22 +8,23 @@ function LoginButtons() {
 
     const [ flag, setFlag ] = useState<boolean>(true)
     const [ openDialogBox, setOpenDialogBox ] = useState<boolean>(false);
+    const [ login, setLogin ] = useState<boolean>(true);
 
   return (
     <div>
     {
         flag ? <div style={{display : "flex", gap:"0.5rem"}}>
-            <Button onClick={() => {setOpenDialogBox(true)}} variant="contained">Login</Button>
-            <Button onClick={() => {setOpenDialogBox(true)}} variant="outlined">Sign Up</Button>
+            <Button onClick={() => {setOpenDialogBox(true); setLogin(true) }} variant="contained">Login</Button>
+            <Button onClick={() => {setOpenDialogBox(true); setLogin(false) }} variant="outlined">Sign Up</Button>
         </div>
         :
         <>
             <IconButton sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="" />
               </IconButton>
         </>    
     }
-    {openDialogBox && <Register setOpenDialogBox={setOpenDialogBox} />}
+    {openDialogBox && <Register setOpenDialogBox={setOpenDialogBox} login={login} />}
     </div>
   )
 }

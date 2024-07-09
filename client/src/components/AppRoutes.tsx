@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from './landing/Landing';
+import Dashboard from './dashboard/Dashboard';
 // import Auth from './components/auth/Auth';
 // import Dashboard from './components/user/Dashboard';
 // import Profile from './components/user/Profile';
@@ -12,14 +13,14 @@ const AppRoutes = () => {
    return (
       <Router>
          <Routes>
+            <Route path="/ḍashboard" element={<Dashboard />} />
             <Route path="/" element={<Landing />} />
             {/* <Route path="/auth" element={<Auth />} /> */}
-            <Route element={<MainLayout />}>
-               {/* <Route path="/user/dashboard" element={<Dashboard />} /> */}
+            {/* <Route element={<MainLayout />}> */}
                {/* <Route path="/user/profile" element={<Profile />} /> */}
                {/* <Route path="/user/profile/update" element={<Update />} /> */}
                {/* <Route path="/user/board" element={<KanbanBoard />} /> */}
-            </Route>
+            {/* </Route> */}
          </Routes>
       </Router>
    );

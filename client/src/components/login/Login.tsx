@@ -10,26 +10,41 @@ const Container = styled(Box)({
     marginRight : 50
 })
 
-function Login() {
+const SignUpText = styled(Typography)(({ theme }) => ({
+    fontSize: 14,
+    " > span": {
+        cursor: "pointer",
+    },
+    " > span:hover": {
+        textDecorationLine: "underline",
+    },
+}));
+
+const ForgetPassword = styled('span')(({ theme }) => ({
+    fontSize : 12,
+    color : theme.palette.primary.main,
+    marginTop : -10,
+    width:100,
+    cursor : 'pointer',
+    ":hover" : {
+        textDecorationLine : "underline",
+    }
+}));
+
+interface MyLoginProps {
+    toggleLogin : () => void;
+}
+
+const Login : React.FC<MyLoginProps> = ({ toggleLogin }) => {
   return (
     <Container>
         <TextField label="Username" variant="outlined" />
         <TextField label="Password" type="password" />
-        <FormControlLabel
-            control={
-            <Checkbox
-                size="small"
-                name="remember"
-            />
-            }
-            sx={{ marginTop:"-10px"}}
-            label={
-            <Typography style={{ fontSize: "0.2 rem" }}>
-                Remember me for a month
-            </Typography>
-            }
-        />
+        <ForgetPassword>Forget Password?</ForgetPassword>
         <Button variant='contained'>Log in</Button>
+        <SignUpText>
+            Don't have an account? <span onClick={toggleLogin}>Sign Up</span>
+        </SignUpText>
     </Container>
   )
 }
