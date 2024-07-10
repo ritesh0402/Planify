@@ -1,4 +1,3 @@
-# Planify
 # Planify - A Simple and Intuitive Project Management Tool
 
 ## Introduction
