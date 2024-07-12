@@ -1,13 +1,13 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import Landing from './landing/Landing';
-import Dashboard from './dashboard/Dashboard';
+import Landing from '../landing/Landing';
+import Dashboard from '../dashboard/Dashboard';
 // import Auth from './components/auth/Auth';
 // import Dashboard from './components/user/Dashboard';
 // import Profile from './components/user/Profile';
 // import Update from './components/user/Update';
 // import KanbanBoard from './components/user/KanbanBoard';
-import MainLayout from './layout/MainLayout';
+// import MainLayout from './layout/MainLayout';
 
 const AppRoutes = () => {
    return (

@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './components/header/Header'
 
 import bgImage from './images/backgroundImage.jpg'
-import AppRoutes from './components/AppRoutes';
+import AppRoutes from './components/routes/AppRoutes';
 
 function App() {
   return (
