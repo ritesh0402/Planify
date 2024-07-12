@@ -14,7 +14,7 @@ const AppRoutes = () => {
       <Router basename='/app'>
          <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/ḍashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             {/* <Route path="/auth" element={<Auth />} /> */}
             {/* <Route element={<MainLayout />}> */}
             {/* <Route path="/user/profile" element={<Profile />} /> */}
