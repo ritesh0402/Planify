@@ -14,8 +14,8 @@ function LoginButtons() {
     <div>
       {
         flag ? <div style={{ display: "flex", gap: "0.5rem" }}>
-          <Button onClick={() => { setOpenDialogBox(true); setLogin(true) }} variant="contained">Login</Button>
-          <Button onClick={() => { setOpenDialogBox(true); setLogin(false) }} variant="outlined">Sign Up</Button>
+          <Button style={{ textTransform: "none" }} onClick={() => { setOpenDialogBox(true); setLogin(true) }} variant="contained">Login</Button>
+          <Button style={{ textTransform: "none" }} onClick={() => { setOpenDialogBox(true); setLogin(false) }} variant="outlined">Sign Up</Button>
         </div>
           :
           <>
