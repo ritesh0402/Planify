@@ -11,10 +11,10 @@ const Logout = () => {
          console.log(logoutRes)
          dispatch(removeUser())
          window.location.href = `${process.env.REACT_APP_URL}/#/app/`
-         // TODO display error to user and redirect user on success logout
+         // TODO display error on screen and redirect user on success logout
 
       } catch (error) {
-         // TODO display error to user and redirect user on success logout
+         // TODO display error on screen and redirect user on success logout
          console.log(error)
       }
    }

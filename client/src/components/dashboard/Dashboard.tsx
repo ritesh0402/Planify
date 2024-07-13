@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Typography, styled } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import CreateBoard from './CreateBoard';
+import axios from 'axios';
+import { useAppSelector } from 'src/redux/hooks/hook';
+axios.defaults.withCredentials = true;
 
 const Container = styled('div')({
   display: 'flex',
@@ -38,7 +41,25 @@ const IconContainer = styled(Button)({
 function Dashboard() {
 
   const [open, setOpen] = useState<boolean>(false);
+  const user = useAppSelector((state) => state.user)
+  const [boards, setBoards] = useState([])
+  console.log(boards)
+  useEffect(() => {
+    const getBoards = async () => {
+      try {
+        const boardsRes = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/${user.userId}/boards`)
+        setBoards(boardsRes.data.data)
+        // TODO display error on screen
+      } catch (error) {
+        console.log(error)
+        // TODO display error on screen
+      }
+    }
 
+    getBoards()
+  }, [])
+
+  // TODO create board component and display all boards
   return (
     <Container>
       <HeaderText>

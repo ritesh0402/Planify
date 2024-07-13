@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "src/redux/hooks/hook";
 import { updateUser } from "src/redux/slices/userSlice";
@@ -24,7 +24,7 @@ const Welcome = () => {
       }
    }, []);
 
-   // TODO create a welcome box for login, cancle icon dabane pe dashboard pe jayega
+   // TODO create a welcome box for login, cancel icon dabane pe dashboard pe jayega
    return (
       <div>
          <h1>Welcome to Your App!</h1>

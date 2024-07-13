@@ -64,12 +64,12 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin }) => {
                 window.location.href = `${process.env.REACT_APP_URL}/#/app/welcome?username=${user.username}&userId=${user.userId}&profile=${user.userProfile}&isAuthenticated=${user.isAuthenticated}`
             } else {
                 console.log(loginRes.data.error)
-                // TODO display error to user
+                // TODO display error on screen
             }
 
         } catch (error: AxiosError | undefined | any) {
             console.log(error.response.data)
-            // TODO display error to user
+            // TODO display error on screen
         }
     }
 

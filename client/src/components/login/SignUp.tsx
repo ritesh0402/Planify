@@ -45,11 +45,11 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin }) => {
         window.location.href = `${process.env.REACT_APP_URL}/#/app/login`
       } else {
         console.log(signupRes.data.error)
-        // TODO display error to user
+        // TODO display error on screen
       }
     } catch (error: AxiosError | undefined | any) {
       console.log(error.response.data)
-      // TODO display error to user
+      // TODO display error on screen
     }
   }
   // TODO Check username is taken or not
