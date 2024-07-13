@@ -3,16 +3,24 @@ import { Dialog, DialogTitle, TextField, Button, IconButton, DialogContent } fro
 import CloseIcon from '@mui/icons-material/Close';
 
 interface MyCreateBoardProps {
+    setBoards : (newState : string[]) => void;
+    boards : string[];
     open : boolean;
     setOpen : (newState : boolean)=> void;
 }
 
 function CreateBoard(props : MyCreateBoardProps) {
 
-    const { open, setOpen } = props;
+    const { setBoards, boards, open, setOpen } = props;
+    const [ title, setTitle ] = useState<string>('');
 
     const handleClose = () =>{
         setOpen(false);
+    }
+
+    const onCreateBoardClick = (board : string) =>{
+      setBoards([...boards, board]);
+      handleClose();
     }
 
   return (
@@ -31,8 +39,8 @@ function CreateBoard(props : MyCreateBoardProps) {
           <CloseIcon />
         </IconButton>
         <DialogContent style={{width : '20vw', gap : '1rem', display : 'flex', flexDirection : 'column'}}>
-            <TextField placeholder='Enter title...' />
-            <Button variant='contained'>Create</Button>
+            <TextField value={title} onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setTitle(e.target.value)} placeholder='Enter title...' />
+            <Button onClick={()=>onCreateBoardClick(title)} variant='contained'>Create</Button>
         </DialogContent>
     </Dialog>
   )
