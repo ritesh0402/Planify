@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-   userName: "",
+   username: "",
    userId: "",
-   userProfile: ""
+   userProfile: "",
+   isAuthenticated: false
 }
 
 const userSlice = createSlice({
@@ -11,14 +12,16 @@ const userSlice = createSlice({
    name: "user",
    reducers: {
       updateUser: (state, action) => {
-         state.userName = action.payload.userName;
-         state.userId = action.payload.userId;
+         state.username = action.payload.username;
+         // state.userId = action.payload.userId;
          state.userProfile = action.payload.profile;
+         state.isAuthenticated = action.payload.isAuthenticated;
       },
       removeUser: (state) => {
-         state.userName = "";
-         state.userId = "";
+         state.username = "";
+         // state.userId = "";
          state.userProfile = "";
+         state.isAuthenticated = false;
       },
    }
 })

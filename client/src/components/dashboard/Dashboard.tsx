@@ -8,10 +8,10 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <h3>{user.userName}</h3>
-      <h3>{user.userId}</h3>
-      <h3>{user.userProfile}</h3>
-      <button onClick={() => dispatch(updateUser({ userName: "abcd", userId: "123", userProfile: "lnk" }))}>add user</button>
+      <h3>{user.username}</h3>
+      <img src={user.userProfile} height={"100px"} width={"100px"} alt="" />
+
+      <button onClick={() => dispatch(updateUser({ username: "abcd", userId: "123", userProfile: "lnk", isAuthenticated: true }))}>add user</button>
       <button onClick={() => dispatch(removeUser())}>remove user</button>
     </div>
   )
