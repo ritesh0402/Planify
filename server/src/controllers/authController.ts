@@ -23,10 +23,10 @@ const userLogin = async (req: any, res: any) => {
          const isValid = await bcrypt.compare(password, user.password);
          if (isValid) {
             req.session.userId = user._id;
-            return res.status(200).send({ status: "Success", data: { username: user.username, profile: user.profile, isAuthenticated: user.isVerified }, error: "", msg: "Login Successful!" });
+            return res.status(200).send({ status: "Success", data: { username: user.username, profile: user.profile, userId: user._id, isAuthenticated: user.isVerified }, error: "", msg: "Login Successful!" });
          }
       }
-      return res.status(401).send({ status: "Failure", data: {}, error: "Invalid Username/Email or Password!", msg: "Please enter valid Username/Password!" })
+      return res.status(400).send({ status: "Failure", data: {}, error: "User not found!", msg: "Please enter valid Username/Password!" })
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
@@ -73,7 +73,7 @@ const userGoogleSignupLogin = async (req: any, res: any) => {
          req.session.userId = existingUser._id;
          existingUser.isVerified = true;
          await existingUser.save()
-         return res.redirect(`${process.env.REDIRECT_URL}?username=${existingUser.username}&profile=${existingUser.profile}&isAuthenticated=${existingUser.isVerified}`)
+         return res.redirect(`${process.env.REDIRECT_URL}/welcome?username=${existingUser.username}&userId=${existingUser._id}&profile=${existingUser.profile}&isAuthenticated=${existingUser.isVerified}`)
       }
 
       const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, profile: profile, isVerified: true });
@@ -83,7 +83,7 @@ const userGoogleSignupLogin = async (req: any, res: any) => {
       }
       await newUser.save();
       req.session.userId = newUser._id;
-      return res.redirect(`${process.env.REDIRECT_URL}?username=${newUser.username}&profile=${newUser.profile}&isAuthenticated=${newUser.isVerified}`)
+      return res.redirect(`${process.env.REDIRECT_URL}/welcome?username=${newUser.username}&userId=${newUser._id}&profile=${newUser.profile}&isAuthenticated=${newUser.isVerified}`)
 
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });

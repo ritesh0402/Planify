@@ -22,9 +22,14 @@ const signupReqValidator = [
       }
 
       try {
-         const user = await User.findOne({ email: req.body.email });
+         const user = await User.findOne({
+            $or: [
+               { email: req.body.email },
+               { username: req.body.username }
+            ]
+         });
          if (user) {
-            return res.status(400).send({ status: "Failure", data: {}, error: "", msg: "An account with this email address already exists." });
+            return res.status(400).send({ status: "Failure", data: {}, error: "", msg: "An account with this email address or username already exists." });
          } else {
             next();
          }

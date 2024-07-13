@@ -13,13 +13,13 @@ const userSlice = createSlice({
    reducers: {
       updateUser: (state, action) => {
          state.username = action.payload.username;
-         // state.userId = action.payload.userId;
-         state.userProfile = action.payload.profile;
+         state.userId = action.payload.userId;
+         state.userProfile = action.payload.userProfile;
          state.isAuthenticated = action.payload.isAuthenticated;
       },
       removeUser: (state) => {
          state.username = "";
-         // state.userId = "";
+         state.userId = "";
          state.userProfile = "";
          state.isAuthenticated = false;
       },

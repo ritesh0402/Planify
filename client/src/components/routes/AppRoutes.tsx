@@ -3,7 +3,8 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from '../landing/Landing';
 import Dashboard from '../dashboard/Dashboard';
 import ProtectedRoute from './ProtectedRoute';
-import Register from '../login/Register';
+// import Register from '../login/Register';
+import Welcome from '../login/Welcome';
 // import Auth from './components/auth/Auth';
 // import Dashboard from './components/user/Dashboard';
 // import Profile from './components/user/Profile';
@@ -12,16 +13,18 @@ import Register from '../login/Register';
 // import MainLayout from './layout/MainLayout';
 
 
-//TODO make Register a component to shoy on route ../app/register
+//TODO make Register a component to show on route ../app/register
+//TODO (Ritesh) Make a route for accepting google auth details
 const AppRoutes = () => {
    return (
       <Router basename='/app'>
          <Routes>
             <Route path="/" element={<Landing />} />
-            {/* <Route path="/register" element={<Register />} /> */}
+            <Route path="/welcome" element={<Welcome />} />
             <Route element={<ProtectedRoute />}>
                <Route path="/dashboard" element={<Dashboard />} />
             </Route>
+            {/* <Route path="/register" element={<Register />} /> */}
             {/* <Route path="/auth" element={<Auth />} /> */}
             {/* <Route element={<MainLayout />}> */}
             {/* <Route path="/user/profile" element={<Profile />} /> */}

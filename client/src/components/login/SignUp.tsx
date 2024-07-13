@@ -41,6 +41,7 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin }) => {
         password: data.password
       })
       if (signupRes.data.status === 'Success') {
+        // TODO redirect user to login route after register component is created 
         window.location.href = `${process.env.REACT_APP_URL}/#/app/login`
       } else {
         console.log(signupRes.data.error)
@@ -51,7 +52,7 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin }) => {
       // TODO display error to user
     }
   }
-
+  // TODO Check username is taken or not
   return (
     <Container>
       <TextField {...register("username", {

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button, IconButton, Avatar } from '@mui/material';
 
 import Register from '../login/Register';
+import Logout from '../login/Logout';
 
 function LoginButtons() {
 
@@ -10,6 +11,7 @@ function LoginButtons() {
   const [openDialogBox, setOpenDialogBox] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(true);
 
+  //TODO change logout button 
   return (
     <div>
       {
@@ -25,6 +27,7 @@ function LoginButtons() {
           </>
       }
       {openDialogBox && <Register setOpenDialogBox={setOpenDialogBox} login={login} />}
+      <Logout />
     </div>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import axios, { AxiosError } from 'axios';
 import { TextField, Typography, Box, styled, Button } from '@mui/material'
-import { useAppDispatch } from '../../redux/hooks/hook';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks/hook';
 import { updateUser } from '../../redux/slices/userSlice';
 
 const Container = styled(Box)({
@@ -40,6 +40,7 @@ interface MyLoginProps {
 }
 
 const Login: React.FC<MyLoginProps> = ({ toggleLogin }) => {
+    const user = useAppSelector((state) => state.user)
     const dispatch = useAppDispatch()
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true,
@@ -57,9 +58,10 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin }) => {
                 dispatch(updateUser({
                     username: newData.username,
                     userProfile: newData.profile,
+                    userId: newData.userId,
                     isAuthenticated: newData.isAuthenticated
                 }))
-                window.location.href = `${process.env.REACT_APP_URL}/#/app/dashboard`
+                window.location.href = `${process.env.REACT_APP_URL}/#/app/welcome?username=${user.username}&userId=${user.userId}&profile=${user.userProfile}&isAuthenticated=${user.isAuthenticated}`
             } else {
                 console.log(loginRes.data.error)
                 // TODO display error to user

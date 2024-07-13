@@ -8,7 +8,7 @@ function ProtectedRoute() {
 
 
    return (
-      user.isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+      user.isAuthenticated ? <Outlet /> : <Navigate to='/register' />
    )
 }
 
