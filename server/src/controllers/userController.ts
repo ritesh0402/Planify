@@ -14,6 +14,12 @@ const userUpdate = async (req: any, res: any) => {
          { new: true }
       );
 
+      const duplicateUsername = await UserModel.find({ username: req.body.username })
+
+      if (duplicateUsername.length > 0) {
+         return res.sendStatus(400).send({ status: "Failure", data: {}, error: "Mongo error", msg: "Username already taken!" });
+      }
+
       if (!updatedUser) {
          return res.sendStatus(404).send({ status: "Failure", data: {}, error: "Mongo error", msg: "User not updated!" });
       }

@@ -23,10 +23,10 @@ const userLogin = async (req: any, res: any) => {
          const isValid = await bcrypt.compare(password, user.password);
          if (isValid) {
             req.session.userId = user._id;
-            return res.status(200).send({ status: "Success", data: { user: user.username }, error: "", msg: "Login Successful!" });
+            return res.status(200).send({ status: "Success", data: { username: user.username, profile: user.profile, userId: user._id, isAuthenticated: user.isVerified }, error: "", msg: "Login Successful!" });
          }
       }
-      return res.status(401).send({ status: "Failure", data: {}, error: "Invalid Username/Email or Password!", msg: "Please enter valid Username/Password!" })
+      return res.status(400).send({ status: "Failure", data: {}, error: "User not found!", msg: "Please enter valid Username/Password!" })
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
@@ -35,15 +35,15 @@ const userLogin = async (req: any, res: any) => {
 const userSignup = async (req: any, res: any) => {
 
    try {
-      const { username, email, phone, password, profile } = req.body;
-      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, profile: profile, isVerified: false });
+      const { username, email, phone, password } = req.body;
+      const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, isVerified: false });
       const emailStatus = await utilityFn.sendMail(email);
       if (!emailStatus) {
          return res.status(500).send({ status: "Failure", data: {}, error: "Try signing up again.", msg: "Internal Server Error!" })
       }
       await newUser.save();
-      req.session.userId = newUser._id;
-      res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "Verify email to complete registration." });
+      // req.session.userId = newUser._id;
+      res.status(200).send({ status: "Success", data: { username: newUser.username, profile: newUser.profile, isAuthenticated: false }, error: "", msg: "Verify email to complete registration." });
 
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
@@ -73,7 +73,7 @@ const userGoogleSignupLogin = async (req: any, res: any) => {
          req.session.userId = existingUser._id;
          existingUser.isVerified = true;
          await existingUser.save()
-         return res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "Login Successful." });
+         return res.redirect(`${process.env.REDIRECT_URL}/welcome?username=${existingUser.username}&userId=${existingUser._id}&profile=${existingUser.profile}&isAuthenticated=${existingUser.isVerified}`)
       }
 
       const newUser = new UserModel({ username: username, password: password, email: email, phone: phone, profile: profile, isVerified: true });
@@ -83,7 +83,7 @@ const userGoogleSignupLogin = async (req: any, res: any) => {
       }
       await newUser.save();
       req.session.userId = newUser._id;
-      res.status(200).send({ status: "Success", data: { username: username, email: email }, error: "", msg: "User successfully registered." });
+      return res.redirect(`${process.env.REDIRECT_URL}/welcome?username=${newUser.username}&userId=${newUser._id}&profile=${newUser.profile}&isAuthenticated=${newUser.isVerified}`)
 
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });

@@ -7,13 +7,13 @@ const signupReqValidator = [
    body('password', 'Password must be at least 8 characters long.').exists().notEmpty().isLength({ min: 8, max: 32 }).escape(),
    body('email', 'Must be a valid email address. ').exists().notEmpty().isEmail().escape(),
    body('phone', 'Phone number must be valid.').exists().notEmpty().isMobilePhone().escape(),
-   body('profile').custom((value: string) => {
-      const cloudinaryUrlPattern = /^https?:\/\/res\.cloudinary\.com\/.*$/;
-      if (!cloudinaryUrlPattern.test(value)) {
-         throw new Error('Profile must be a Cloudinary URL.');
-      }
-      return true;
-   }),
+   // body('profile').custom((value: string) => {
+   //    const cloudinaryUrlPattern = /^https?:\/\/res\.cloudinary\.com\/.*$/;
+   //    if (!cloudinaryUrlPattern.test(value)) {
+   //       throw new Error('Profile must be a Cloudinary URL.');
+   //    }
+   //    return true;
+   // }),
    async (req: any, res: any, next: NextFunction) => {
 
       const errors = validationResult(req);
@@ -22,9 +22,14 @@ const signupReqValidator = [
       }
 
       try {
-         const user = await User.findOne({ email: req.body.email });
+         const user = await User.findOne({
+            $or: [
+               { email: req.body.email },
+               { username: req.body.username }
+            ]
+         });
          if (user) {
-            return res.status(400).send({ status: "Failure", data: {}, error: "", msg: "An account with this email address already exists." });
+            return res.status(400).send({ status: "Failure", data: {}, error: "", msg: "An account with this email address or username already exists." });
          } else {
             next();
          }
