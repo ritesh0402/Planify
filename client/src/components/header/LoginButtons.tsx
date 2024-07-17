@@ -6,7 +6,7 @@ import Register from '../login/Register';
 import Logout from '../login/Logout';
 
 function LoginButtons() {
-
+  // TODO (ritesh) ye flag state change karna hai if user logged in hai toh false rakh else true (ye hone ke baad he mein logout button add kar sakhta hu)
   const [flag, setFlag] = useState<boolean>(true)
   const [openDialogBox, setOpenDialogBox] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(true);

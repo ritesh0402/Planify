@@ -25,9 +25,10 @@ const SignInText = styled(Typography)(({ theme }) => ({
 
 interface MySignUpProps {
   toggleLogin: () => void;
+  handleClose:() => void;
 }
 
-const SignUp: React.FC<MySignUpProps> = ({ toggleLogin }) => {
+const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
   const { register, handleSubmit } = useForm({
     shouldUseNativeValidation: true
   })
@@ -43,6 +44,7 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin }) => {
       if (signupRes.data.status === 'Success') {
         // TODO redirect user to login route after register component is created 
         window.location.href = `${process.env.REACT_APP_URL}/#/app/login`
+        handleClose();
       } else {
         console.log(signupRes.data.error)
         // TODO display error on screen

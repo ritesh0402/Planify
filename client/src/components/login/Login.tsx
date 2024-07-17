@@ -37,9 +37,10 @@ const ForgetPassword = styled('span')(({ theme }) => ({
 
 interface MyLoginProps {
     toggleLogin: () => void;
+    handleClose : () => void;
 }
 
-const Login: React.FC<MyLoginProps> = ({ toggleLogin }) => {
+const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
     const user = useAppSelector((state) => state.user)
     const dispatch = useAppDispatch()
     const { register, handleSubmit } = useForm({
@@ -62,6 +63,7 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin }) => {
                     isAuthenticated: newData.isAuthenticated
                 }))
                 window.location.href = `${process.env.REACT_APP_URL}/#/app/welcome?username=${user.username}&userId=${user.userId}&profile=${user.userProfile}&isAuthenticated=${user.isAuthenticated}`
+                handleClose();
             } else {
                 console.log(loginRes.data.error)
                 // TODO display error on screen

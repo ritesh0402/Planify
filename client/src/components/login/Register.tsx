@@ -16,6 +16,7 @@ const LeftContainer = styled(Box)({
     width: 450,
 })
 //TODO make Register a component to show on route ../app/register
+// TODO (ritesh) ye upar wala todo kyu karna hai?
 const Register: React.FC<MyRegisterProps> = ({ setOpenDialogBox, login }) => {
 
     const [open, setOpen] = useState<boolean>(true);
@@ -46,7 +47,7 @@ const Register: React.FC<MyRegisterProps> = ({ setOpenDialogBox, login }) => {
                 <LeftContainer>
                     <img style={{ objectFit: 'cover', width: '100%' }} src={loginImage} alt='login illustrations' />
                 </LeftContainer>
-                {loginAcccount ? <Login toggleLogin={toggleLogin} /> : <SignUp toggleLogin={toggleLogin} />}
+                {loginAcccount ? <Login handleClose={handleClose} toggleLogin={toggleLogin} /> : <SignUp handleClose={handleClose} toggleLogin={toggleLogin} />}
                 <GoogleOneTapLogin onError={(error: any) => console.log(error)} onSuccess={(response: any) => console.log(response)} googleAccountConfigs={{ client_id: clientId }} />
 
                 <Button variant='contained' onClick={onGoogleLogin}>Google</Button>

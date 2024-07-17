@@ -1,9 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "src/redux/hooks/hook";
 import { updateUser } from "src/redux/slices/userSlice";
 
+import { Button, Dialog, styled } from "@mui/material";
+
+const Container = styled('div')({
+   display : "flex",
+   flexDirection : 'column', 
+   padding : 20,
+   // height : '70vh'
+})
+
 const Welcome = () => {
+
+   const [ open, setOpen ] = useState<boolean>(true);
+
+   const handleClose = () =>{
+      setOpen(false);
+   }
+
+   const onStartClick = () =>{
+      handleClose();
+      window.location.href = `${process.env.REACT_APP_URL}/#/app`
+   }
+
    const user = useAppSelector((state) => state.user)
    const dispatch = useAppDispatch()
    const location = useLocation();
@@ -24,14 +45,16 @@ const Welcome = () => {
       }
    }, []);
 
-   // TODO create a welcome box for login, cancel icon dabane pe dashboard pe jayega
    return (
-      <div>
-         <h1>Welcome to Your App!</h1>
-         {user.userId && <p>Your userId is: {user.userId}</p>}
-         {user.username && <p>Your username is: {user.username}</p>}
-         {user.userProfile && <img src={user.userProfile} alt={user.userProfile} />}
-      </div>
+      <Dialog  open={open}>
+         <Container>
+            <h1>Welcome to Your App!</h1>
+            {user.userId && <p>Your userId is: {user.userId}</p>}
+            {user.username && <p>Your username is: {user.username}</p>}
+            {user.userProfile && <img style={{width : 200, marginBottom : 10}} src={user.userProfile} alt={user.userProfile} />}
+            <Button variant="contained" onClick={onStartClick}>Start Planning</Button>
+         </Container>
+      </Dialog>
    )
 }
 
