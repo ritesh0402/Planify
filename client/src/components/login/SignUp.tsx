@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { TextField, Box, Typography, styled, Button } from '@mui/material'
 import { useForm } from 'react-hook-form';
@@ -23,12 +23,22 @@ const SignInText = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const ErrorField = styled(Typography)({
+  fontSize : 10,
+  marginTop : -10,
+  color : 'red',
+  fontWeight : 600,
+})
+
 interface MySignUpProps {
   toggleLogin: () => void;
   handleClose:() => void;
 }
 
 const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
+
+  const [ error, setError ] = useState<string>("");
+
   const { register, handleSubmit } = useForm({
     shouldUseNativeValidation: true
   })
@@ -42,19 +52,19 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
         password: data.password
       })
       if (signupRes.data.status === 'Success') {
-        // TODO redirect user to login route after register component is created 
-        window.location.href = `${process.env.REACT_APP_URL}/#/app/login`
+        // TODO redirect user to login route after register component is created (ye kyu karna hai bhai route nahi banaya hai login ka)
+        window.location.href = `${process.env.REACT_APP_URL}/#/app`
         handleClose();
       } else {
         console.log(signupRes.data.error)
-        // TODO display error on screen
+        setError(signupRes.data.msg)
       }
     } catch (error: AxiosError | undefined | any) {
       console.log(error.response.data)
-      // TODO display error on screen
+      setError(error.response.data.msg)
     }
   }
-  // TODO Check username is taken or not
+  
   return (
     <Container>
       <TextField {...register("username", {
@@ -69,6 +79,7 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
       <TextField {...register("password", {
         required: "Please enter a valid password!"
       })} label="Password" type="password" />
+      {error && <ErrorField>{error}</ErrorField>}
       <Button variant='contained' onClick={handleSubmit(onSubmit)}>Sign up</Button>
       <SignInText>
         Already have an account? <span onClick={toggleLogin}>Sign In</span>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios, { AxiosError } from 'axios';
 import { TextField, Typography, Box, styled, Button } from '@mui/material'
@@ -35,12 +35,22 @@ const ForgetPassword = styled('span')(({ theme }) => ({
     }
 }));
 
+const ErrorField = styled(Typography)({
+    fontSize : 10,
+    marginTop : -10,
+    color : 'red',
+    fontWeight : 600,
+})
+
 interface MyLoginProps {
     toggleLogin: () => void;
     handleClose : () => void;
 }
 
 const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
+
+    const [ error, setError ] = useState<string>("");
+
     const user = useAppSelector((state) => state.user)
     const dispatch = useAppDispatch()
     const { register, handleSubmit } = useForm({
@@ -66,12 +76,12 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
                 handleClose();
             } else {
                 console.log(loginRes.data.error)
-                // TODO display error on screen
+                setError(loginRes.data.msg)
             }
 
         } catch (error: AxiosError | undefined | any) {
             console.log(error.response.data)
-            // TODO display error on screen
+            setError(error.response.data.msg)
         }
     }
 
@@ -83,6 +93,7 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
             <TextField {...register("password", {
                 required: "Please enter a password!"
             })} label="Password" type="password" />
+            {error && <ErrorField>{error}</ErrorField>}
             <ForgetPassword>Forget Password?</ForgetPassword>
             <Button variant='contained' onClick={handleSubmit(onSubmit)}>Log in</Button>
             <SignUpText>
