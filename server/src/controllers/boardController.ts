@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import BoardModel from "../models/Board";
 
 const boardGetAll = async (req: any, res: any) => {
@@ -97,7 +97,7 @@ const boardUpdate = async (req: any, res: any) => {
 
 const boardDelete = async (req: any, res: any) => {
    try {
-      const boardId = req.params.id;
+      const boardId = new mongoose.Types.ObjectId(req.params.id);
 
       const deletedBoard = await BoardModel.findOneAndDelete({
          _id: boardId,
@@ -109,6 +109,7 @@ const boardDelete = async (req: any, res: any) => {
       }
       res.status(200).send({ status: "Success", data: { deletedBoard }, error: "", msg: "Board successfully deleted." });
    } catch (err) {
+      console.log(err)
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }
 }

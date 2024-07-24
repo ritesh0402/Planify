@@ -12,21 +12,25 @@ function ProtectedRoute() {
    const dispatch = useAppDispatch();
 
 
-
    let access = user.isAuthenticated;
 
 
    useEffect(() => {
       const getUser = async () => {
-         const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/user`)
-         const user = res.data.data;
-         dispatch(updateUser({
-            username: user.username,
-            userProfile: user.profile,
-            userId: user.userId,
-            isAuthenticated: user.isAuthenticated
-         }))
+         try {
+            const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/user`)
+            const user = res.data.data;
+            dispatch(updateUser({
+               username: user.username,
+               userProfile: user.profile,
+               userId: user.userId,
+               isAuthenticated: user.isAuthenticated
+            }))
+         } catch (error) {
+            access = false;
+         }
       }
+      access = false;
       if (!user.userId) {
          if (cookie.userId) {
             getUser()
@@ -36,9 +40,9 @@ function ProtectedRoute() {
          }
       }
    })
-
+   // TODO (Ved) add loading animation
    return (
-      access ? <Outlet /> : <Navigate to='' />
+      access ? <Outlet /> : <Navigate to='/' />
    )
 }
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, styled } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
 import CreateBoard from "./CreateBoard";
 import axios from "axios";
 import { useAppSelector } from "src/redux/hooks/hook";
@@ -44,13 +43,11 @@ function Dashboard() {
   // const boards = useAppSelector((state) => state.boards);
   // TODO (ritesh) handle default board state
   const [boards, setBoards] = useState([{ boardTitle: "", createdAt: "", creatorId: "", updatedAt: "", _id: "" }]);
-  console.log(boards);
   useEffect(() => {
     const getBoards = async () => {
       try {
         const boardsRes = await axios.get(
-          `${process.env.REACT_APP_SERVER_URL}/api/${user.userId}/boards`
-        );
+          `${process.env.REACT_APP_SERVER_URL}/api/${user.userId}/boards`);
         setBoards(boardsRes.data.data.boards);
         // TODO display error on screen
       } catch (error) {
@@ -60,7 +57,19 @@ function Dashboard() {
     };
 
     getBoards();
-  });
+  }, [boards]);
+
+  // TODO (Ved) Board deleted karke koi popup ya alert daal de
+  const deleteBoard = async (boardId: any) => {
+    try {
+      const res = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/board/${boardId}`, { withCredentials: true })
+      console.log(res)
+
+    } catch (error) {
+      console.log(error)
+
+    }
+  }
 
   // TODO board delete button
   return (
@@ -80,7 +89,7 @@ function Dashboard() {
 
       {boards.length !== 0 ? (
         boards.map((board) => (
-          <Boards>
+          <Boards key={board._id}>
             <div style={{ padding: 15 }}>
               <Typography variant="h6">
                 <b>{board.boardTitle}</b>
@@ -94,7 +103,7 @@ function Dashboard() {
               </Typography>
             </div>
             <IconContainer>
-              <DeleteOutlineIcon />
+              <DeleteOutlineIcon onClick={() => deleteBoard(board._id)} />
             </IconContainer>
           </Boards>
         ))

@@ -14,7 +14,7 @@ boardSchema.virtual('url').get(function () {
 boardSchema.post('findOneAndDelete', async function (board, next) {
    await mongoose.model('List').deleteMany({ boardId: board._id });
    await mongoose.model('Task').deleteMany({ boardId: board._id });
-   await mongoose.model('Subtask').deleteMany({ boardId: board._id });
+   await mongoose.model('SubTask').deleteMany({ boardId: board._id });
    next()
 })
 
@@ -23,7 +23,7 @@ boardSchema.post('deleteMany', async function (next) {
    for (const board of deletedBoards) {
       await mongoose.model('List').deleteMany({ boardId: board._id });
       await mongoose.model('Task').deleteMany({ boardId: board._id });
-      await mongoose.model('Subtask').deleteMany({ boardId: board._id });
+      await mongoose.model('SubTask').deleteMany({ boardId: board._id });
    }
    next();
 })

@@ -27,7 +27,6 @@ function CreateBoard(props: MyCreateBoardProps) {
       const addBoardReq = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/board`, {
         boardTitle: data.boardTitle
       })
-      console.log(addBoardReq.data.data)
       setOpen(false)
       // TODO display error on screen
     } catch (error) {
