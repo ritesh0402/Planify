@@ -41,8 +41,9 @@ const IconContainer = styled(Button)({
 function Dashboard() {
   const [open, setOpen] = useState<boolean>(false);
   const user = useAppSelector((state) => state.user);
+  // const boards = useAppSelector((state) => state.boards);
   // TODO (ritesh) handle default board state
-  const [boards, setBoards] = useState([]);
+  const [boards, setBoards] = useState([{ boardTitle: "", createdAt: "", creatorId: "", updatedAt: "", _id: "" }]);
   console.log(boards);
   useEffect(() => {
     const getBoards = async () => {
@@ -50,7 +51,7 @@ function Dashboard() {
         const boardsRes = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}/api/${user.userId}/boards`
         );
-        setBoards(boardsRes.data.data);
+        setBoards(boardsRes.data.data.boards);
         // TODO display error on screen
       } catch (error) {
         console.log(error);
@@ -59,9 +60,9 @@ function Dashboard() {
     };
 
     getBoards();
-  }, []);
+  });
 
-  // TODO create board component and display all boards
+  // TODO board delete button
   return (
     <Container>
       <HeaderText>
@@ -82,7 +83,7 @@ function Dashboard() {
           <Boards>
             <div style={{ padding: 15 }}>
               <Typography variant="h6">
-                <b>{board}</b>
+                <b>{board.boardTitle}</b>
               </Typography>
               <Typography
                 style={{ color: "#726767", fontSize: "0.8rem" }}

@@ -16,7 +16,6 @@ const LeftContainer = styled(Box)({
     width: 450,
 })
 //TODO make Register a component to show on route ../app/register
-// TODO (ritesh) ye upar wala todo kyu karna hai?
 const Register: React.FC<MyRegisterProps> = ({ setOpenDialogBox, login }) => {
 
     const [open, setOpen] = useState<boolean>(true);

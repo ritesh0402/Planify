@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { TextField, Typography, Box, styled, Button } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hook';
 import { updateUser } from '../../redux/slices/userSlice';
+import { useCookies } from 'react-cookie';
 
 const Container = styled(Box)({
     display: "flex",
@@ -36,21 +37,21 @@ const ForgetPassword = styled('span')(({ theme }) => ({
 }));
 
 const ErrorField = styled(Typography)({
-    fontSize : 10,
-    marginTop : -10,
-    color : 'red',
-    fontWeight : 600,
+    fontSize: 10,
+    marginTop: -10,
+    color: 'red',
+    fontWeight: 600,
 })
 
 interface MyLoginProps {
     toggleLogin: () => void;
-    handleClose : () => void;
+    handleClose: () => void;
 }
 
 const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
 
-    const [ error, setError ] = useState<string>("");
-
+    const [error, setError] = useState<string>("");
+    const [cookie, setCookie] = useCookies(['userId']);
     const user = useAppSelector((state) => state.user)
     const dispatch = useAppDispatch()
     const { register, handleSubmit } = useForm({
@@ -72,6 +73,7 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
                     userId: newData.userId,
                     isAuthenticated: newData.isAuthenticated
                 }))
+                setCookie('userId', newData.userId, { path: '/', maxAge: (100 * 60 * 60 * 24 * 7) })
                 window.location.href = `${process.env.REACT_APP_URL}/#/app/welcome?username=${user.username}&userId=${user.userId}&profile=${user.userProfile}&isAuthenticated=${user.isAuthenticated}`
                 handleClose();
             } else {

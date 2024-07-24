@@ -43,7 +43,7 @@ const userSignup = async (req: any, res: any) => {
       }
       await newUser.save();
       // req.session.userId = newUser._id;
-      res.status(200).send({ status: "Success", data: { username: newUser.username, profile: newUser.profile, isAuthenticated: false }, error: "", msg: "Verify email to complete registration." });
+      res.status(200).send({ status: "Success", data: { username: newUser.username, profile: newUser.profile, userId: newUser._id, isAuthenticated: false }, error: "", msg: "Verify email to complete registration." });
 
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
@@ -99,11 +99,14 @@ const userLogout = (req: any, res: any) => {
 
 }
 
-const userCheckAuth = (req: any, res: any) => {
-   if (!req.session.userId) {
-      return res.status(404).send(null);
+const userCheckAuth = async (req: any, res: any) => {
+   if (req.session.userId) {
+      const user = await UserModel.findOne({ _id: req.session.userId })
+      if (user) {
+         return res.status(200).send({ status: "Success", data: { username: user.username, profile: user.profile, userId: user._id, isAuthenticated: user.isVerified }, error: "", msg: "User is Loggedin" });
+      }
    }
-   return res.status(200).send(req.session.userId)
+   return res.status(404).send(null);
 }
 
 const userEmailVerify = async (req: any, res: any) => {

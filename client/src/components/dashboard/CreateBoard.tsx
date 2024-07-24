@@ -35,7 +35,7 @@ function CreateBoard(props: MyCreateBoardProps) {
       console.log(error)
     }
   }
-
+  // TODO (Ved) Auto focus on input box
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Give your board a title</DialogTitle>

@@ -56,7 +56,7 @@ const boardGet = async (req: any, res: any) => {
       if (!board || !board.length) {
          return res.status(404).send({ status: "Failure", data: {}, error: "Board were not found!", msg: "Something went wrong." })
       }
-      return res.status(200).send({ status: "Success", data: { board }, error: "", msg: "Board retrieved." });
+      return res.status(200).send({ status: "Success", data: board, error: "", msg: "Board retrieved." });
    } catch (err) {
       res.status(500).send({ status: "Failure", data: {}, error: err, msg: "Internal Server Error!" });
    }

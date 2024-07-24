@@ -14,7 +14,6 @@ import Welcome from '../login/Welcome';
 
 
 //TODO make Register a component to show on route ../app/register
-//TODO (Ritesh) Make a route for accepting google auth details
 const AppRoutes = () => {
    return (
       <Router basename='/app'>
