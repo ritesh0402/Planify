@@ -4,6 +4,8 @@ import { Button, IconButton, Avatar } from '@mui/material';
 
 import Register from '../login/Register';
 import Logout from '../login/Logout';
+import Profile from './Profile';
+
 import { useAppSelector } from 'src/redux/hooks/hook';
 
 function LoginButtons() {
@@ -22,10 +24,7 @@ function LoginButtons() {
         </div>
           :
           <>
-            <IconButton sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="" />
-            </IconButton>
-            <Logout />
+            <Profile />
           </>
       }
       {openDialogBox && <Register setOpenDialogBox={setOpenDialogBox} login={login} />}

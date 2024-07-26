@@ -35,6 +35,7 @@ function CreateBoard(props: MyCreateBoardProps) {
     }
   }
   // TODO (Ved) Auto focus on input box
+  // TODO (ritesh) delete previously entered board title
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Give your board a title</DialogTitle>
