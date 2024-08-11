@@ -3,16 +3,9 @@ import User from "../models/User";
 const { body, validationResult } = require('express-validator');
 
 const updateUserReqValidator = [
-   body('username', 'Username must not be empty. ').exists().notEmpty().isLength({ min: 6, max: 64 }).escape(),
-   body('password', 'Password must be at least 8 characters long.').exists().notEmpty().isLength({ min: 8, max: 32 }).escape(),
-   body('phone', 'Phone number must be valid.').exists().notEmpty().isMobilePhone().escape(),
-   body('profile').custom((value: string) => {
-      const cloudinaryUrlPattern = /^https?:\/\/res\.cloudinary\.com\/.*$/;
-      if (!cloudinaryUrlPattern.test(value)) {
-         throw new Error('Profile must be a Cloudinary URL.');
-      }
-      return true;
-   }),
+   body('username', 'Username must not be empty. ').escape(),
+   body('password', 'Password must be at least 8 characters long.').escape(),
+   // body('phone', 'Phone number must be valid.').exists().notEmpty().isMobilePhone().escape(),
    async (req: any, res: any, next: NextFunction) => {
 
       const errors = validationResult(req);
@@ -21,7 +14,7 @@ const updateUserReqValidator = [
       }
 
       try {
-         const user = await User.findOne({ email: req.body.email });
+         const user = await User.findOne({ _id: req.session.userId });
          if (!user) {
             return res.status(400).send({ status: "Failure", data: {}, error: "", msg: "User does not exist." });
          } else {

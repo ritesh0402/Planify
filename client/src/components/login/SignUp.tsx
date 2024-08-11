@@ -24,20 +24,20 @@ const SignInText = styled(Typography)(({ theme }) => ({
 }));
 
 const ErrorField = styled(Typography)({
-  fontSize : 10,
-  marginTop : -10,
-  color : 'red',
-  fontWeight : 600,
+  fontSize: 10,
+  marginTop: -10,
+  color: 'red',
+  fontWeight: 600,
 })
 
 interface MySignUpProps {
   toggleLogin: () => void;
-  handleClose:() => void;
+  handleClose: () => void;
 }
 
 const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
 
-  const [ error, setError ] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const { register, handleSubmit } = useForm({
     shouldUseNativeValidation: true
@@ -56,15 +56,13 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
         window.location.href = `${process.env.REACT_APP_URL}/#/app`
         handleClose();
       } else {
-        console.log(signupRes.data.error)
         setError(signupRes.data.msg)
       }
     } catch (error: AxiosError | undefined | any) {
-      console.log(error.response.data)
       setError(error.response.data.msg)
     }
   }
-  
+
   return (
     <Container>
       <TextField {...register("username", {

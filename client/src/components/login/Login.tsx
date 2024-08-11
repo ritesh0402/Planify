@@ -77,12 +77,10 @@ const Login: React.FC<MyLoginProps> = ({ toggleLogin, handleClose }) => {
                 window.location.href = `${process.env.REACT_APP_URL}/#/app/welcome?username=${user.username}&userId=${user.userId}&profile=${user.userProfile}&isAuthenticated=${user.isAuthenticated}`
                 handleClose();
             } else {
-                console.log(loginRes.data.error)
                 setError(loginRes.data.msg)
             }
 
         } catch (error: AxiosError | undefined | any) {
-            console.log(error.response.data)
             setError(error.response.data.msg)
         }
     }

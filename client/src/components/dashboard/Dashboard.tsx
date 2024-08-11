@@ -40,8 +40,6 @@ const IconContainer = styled(Button)({
 function Dashboard() {
   const [open, setOpen] = useState<boolean>(false);
   const user = useAppSelector((state) => state.user);
-  // const boards = useAppSelector((state) => state.boards);
-  // TODO (ritesh) handle default board state
   const [boards, setBoards] = useState([{ boardTitle: "", createdAt: "", creatorId: "", updatedAt: "", _id: "" }]);
   useEffect(() => {
     const getBoards = async () => {
@@ -57,13 +55,12 @@ function Dashboard() {
     };
 
     getBoards();
-  }, [boards]);
+  });
 
   // TODO (Ved) Board deleted karke koi popup ya alert daal de
   const deleteBoard = async (boardId: any) => {
     try {
       const res = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/board/${boardId}`, { withCredentials: true })
-      console.log(res)
 
     } catch (error) {
       console.log(error)

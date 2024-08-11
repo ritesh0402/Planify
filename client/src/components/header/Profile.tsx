@@ -16,31 +16,33 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import axios from "axios"
 import { useCookies } from "react-cookie";
-import { useAppDispatch } from "src/redux/hooks/hook"
+import { useAppDispatch, useAppSelector } from "src/redux/hooks/hook"
 import { removeUser } from "src/redux/slices/userSlice"
+import { inherits } from "util";
 
-export interface IProfileProps {}
+export interface IProfileProps { }
 
 export default function Profile(props: IProfileProps) {
-    const [ open, setOpen ] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [cookie, setCookie, removeCookie] = useCookies(['userId']);
   const dispatch = useAppDispatch()
+  const user = useAppSelector(store => store.user);
   const openMenu = Boolean(anchorEl);
 
   const onLoggedOut = async () => {
     try {
-        const logoutRes = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/logout`)
-        removeCookie('userId', { path: '/' });
-        dispatch(removeUser())
-        window.location.href = `${process.env.REACT_APP_URL}/#/app/`
-    } 
+      const logoutRes = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/logout`)
+      removeCookie('userId', { path: '/' });
+      dispatch(removeUser())
+      window.location.href = `${process.env.REACT_APP_URL}/#/app/`
+    }
     catch (error) {
-        console.log(error)
+      console.log(error)
     }
     handleClose();
   }
-  
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -61,7 +63,7 @@ export default function Profile(props: IProfileProps) {
             aria-haspopup="true"
             aria-expanded={openMenu ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }}>V</Avatar>
+            <Avatar sx={{ width: 40, height: 40 }}> <img src={user.userProfile} alt="user" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -100,11 +102,11 @@ export default function Profile(props: IProfileProps) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           User ID : 66939a1a518933513364b77e
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleClose}>
-          Username : vedjaiswal
+          Username : {user.username}
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setOpen(true)}>

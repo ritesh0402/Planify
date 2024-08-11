@@ -52,7 +52,7 @@ function CreateBoard(props: MyCreateBoardProps) {
         <CloseIcon />
       </IconButton>
       <DialogContent style={{ width: '20vw', gap: '1rem', display: 'flex', flexDirection: 'column' }}>
-        <TextField placeholder='Enter title...' {...register("boardTitle", {
+        <TextField defaultValue="" autoFocus placeholder='Enter title...' {...register("boardTitle", {
           required: "Please enter a valid title!"
         })} />
         <Button variant='contained' onClick={handleSubmit(onSubmit)}>Create</Button>

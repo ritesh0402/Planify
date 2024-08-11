@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 
-import { Button, IconButton, Avatar } from '@mui/material';
+import { Button } from '@mui/material';
 
 import Register from '../login/Register';
-import Logout from '../login/Logout';
 import Profile from './Profile';
 
 import { useAppSelector } from 'src/redux/hooks/hook';
