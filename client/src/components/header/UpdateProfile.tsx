@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import imageCompression from 'browser-image-compression';
 import { updateUser } from 'src/redux/slices/userSlice';
+import { useEffect } from 'react';
 
 export interface IUpdateProfileProps {
   open: boolean;
@@ -33,7 +34,7 @@ export default function UpdateProfile(props: IUpdateProfileProps) {
   const [preview, setPreview] = React.useState<string>(user.userProfile);
   const [showPassword, setShowPassword] = React.useState(false);
   const { open, setOpen } = props;
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, setValue, reset } = useForm({
     shouldUseNativeValidation: true
   })
   const dispatch = useAppDispatch()
@@ -59,11 +60,11 @@ export default function UpdateProfile(props: IUpdateProfileProps) {
 
   const onFormSubmit = async (data: any) => {
     const userUpg: any = {};
-    if (data.profile !== preview) {
+    if (preview !== user.userProfile) {
       let compressedFile;
       const options = {
-        maxSizeMB: 2,
-        maxWidthOrHeight: 1920,
+        maxSizeMB: 1,
+        maxWidthOrHeight: 400,
         useWebWorker: true,
       }
       try {
@@ -115,14 +116,23 @@ export default function UpdateProfile(props: IUpdateProfileProps) {
   const handleClose = () => {
     setOpen(false);
   }
-  //TODO (ved) clear form after component is closed ()
+
+  useEffect(() => {
+    if (open) {
+      reset({
+        username: user.username
+      });
+    }
+  }, [open, reset]);
+
+  // TODO (ved) Display errors to user like psk too short or username already taken
   return (
     <Dialog open={open} onClose={handleClose}>
       <MainContainer>
         <Avatar alt="Profile photo" src={preview} sx={{ width: 200, height: 200 }} />
         <Button sx={{ textTransform: "none" }} variant="contained" component="label">
           Upload Image
-          <input type="file" hidden {...register('profile')} onChange={handleImageChange} />
+          <input type="file" hidden {...register('profile')} onChange={handleImageChange} accept=".jpg,.jpeg,.png,.heic,.heif" />
         </Button>
         <StyledTextField focused {...register('username')} defaultValue={user.username} onChange={onInputChange} label="Username" variant="standard" />
         <FormControl focused sx={{ m: 1, width: 300 }} variant="standard">

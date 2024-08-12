@@ -4,8 +4,6 @@ import Landing from '../landing/Landing';
 import Dashboard from '../dashboard/Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 import Welcome from '../login/Welcome';
-// import KanbanBoard from './components/user/KanbanBoard';
-// import MainLayout from './layout/MainLayout';
 
 const AppRoutes = () => {
    return (
@@ -16,8 +14,6 @@ const AppRoutes = () => {
             <Route element={<ProtectedRoute />}>
                <Route path="/dashboard" element={<Dashboard />} />
             </Route>
-            {/* <Route element={<MainLayout />}> */}
-            {/* </Route> */}
          </Routes>
       </Router>
    );

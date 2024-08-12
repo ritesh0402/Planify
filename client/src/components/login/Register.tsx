@@ -15,7 +15,6 @@ interface MyRegisterProps {
 const LeftContainer = styled(Box)({
     width: 450,
 })
-//TODO make Register a component to show on route ../app/register
 const Register: React.FC<MyRegisterProps> = ({ setOpenDialogBox, login }) => {
 
     const [open, setOpen] = useState<boolean>(true);

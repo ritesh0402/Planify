@@ -52,7 +52,7 @@ const SignUp: React.FC<MySignUpProps> = ({ toggleLogin, handleClose }) => {
         password: data.password
       })
       if (signupRes.data.status === 'Success') {
-        // TODO redirect user to login route after register component is created (ye kyu karna hai bhai route nahi banaya hai login ka)
+        // TODO (ved) redirect user to login route after signup
         window.location.href = `${process.env.REACT_APP_URL}/#/app`
         handleClose();
       } else {

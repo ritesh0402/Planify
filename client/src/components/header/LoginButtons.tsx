@@ -8,12 +8,10 @@ import Profile from './Profile';
 import { useAppSelector } from 'src/redux/hooks/hook';
 
 function LoginButtons() {
-  // TODO (ved) logout button add kar
   const user = useAppSelector((state) => state.user)
   const [openDialogBox, setOpenDialogBox] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(true);
 
-  //TODO (ved) change logout button 
   return (
     <div>
       {

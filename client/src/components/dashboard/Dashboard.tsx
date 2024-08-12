@@ -54,13 +54,17 @@ function Dashboard() {
       }
     };
 
-    getBoards();
-  });
+    if (user.userId) {
+      getBoards();
+    }
+  }, [user.userId]);
 
-  // TODO (Ved) Board deleted karke koi popup ya alert daal de
+
   const deleteBoard = async (boardId: any) => {
     try {
-      const res = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/board/${boardId}`, { withCredentials: true })
+      await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/board/${boardId}`, { withCredentials: true })
+
+      setBoards(boards => boards.filter(board => board._id !== boardId))
 
     } catch (error) {
       console.log(error)
@@ -68,7 +72,6 @@ function Dashboard() {
     }
   }
 
-  // TODO board delete button
   return (
     <Container>
       <HeaderText>
@@ -123,7 +126,7 @@ function Dashboard() {
           </IconContainer>
         </Boards>
       )}
-      <CreateBoard open={open} setOpen={setOpen} />
+      <CreateBoard boards={boards} setBoards={setBoards} open={open} setOpen={setOpen} />
     </Container>
   );
 }
